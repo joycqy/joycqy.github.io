@@ -3,18 +3,19 @@ project:
   output-dir: docs
 
 website:
-  title: "joycqy.github.io"
+  title: "Qingyin Cai"
   navbar:
     left:
       - href: index.qmd
-        text: Home
-      - about.qmd
+        text: About me
+      - research.qmd
+      - teaching.qmd
 
 format:
   html:
-    theme: cosmo
+    theme: sandstone
     css: styles.css
-    toc: true
+    toc: false
 
 
 

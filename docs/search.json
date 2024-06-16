@@ -5,5 +5,26 @@
     "title": "About",
     "section": "",
     "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Qingyin Cai",
+    "section": "",
+    "text": "Hello! Welcome to my website. My name is Qingyin Cai.\nI am a PhD student in the Department of Applied Economics at the University of Minnesota. My research interests are in agricultrual economics and environmental economics.\nSpecific Topics I am interested in include:\n\nClimate Change\nSustainable Agriculture\n\nI obtained my Bachelor’s and Master’s degree in Economics from the Zhejiang University.\nHere is my CV.\nYou can contact me at cai00154@umn.edu."
+  },
+  {
+    "objectID": "research.html#working-papers",
+    "href": "research.html#working-papers",
+    "title": "Reseach",
+    "section": "Working Papers",
+    "text": "Working Papers"
+  },
+  {
+    "objectID": "research.html#work-in-progress",
+    "href": "research.html#work-in-progress",
+    "title": "Reseach",
+    "section": "Work in Progress",
+    "text": "Work in Progress"
   }
 ]

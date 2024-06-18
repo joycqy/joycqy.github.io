@@ -1,29 +1,30 @@
 ---
+title: "Qingyin Cai"
 image: portrait\headshot_1.jpg
 about:
   template: trestles
   image-shape: rectangle
-  image-width: 15em
+  image-width: 18em
   links: 
     -   text: Email
         icon: envelope
         href: mailto:cai00154@umn.edu
-
+    -   text: Twitter
+        icon: twitter
+        href: "https://x.com/QingyinCai"      
+comments: false
 ---
+::: {.column-page}
 
-Hello! Welcome to my website. My name is Qingyin Cai. 
+Welcome to my website!
+
+I'm a PhD candidate in the [Department of Applied Economics](https://apec.umn.edu/) at the University of Minnesota. My fields of interest include agricultural economics, consumer economics, and environmental economics. 
+
+My current research addresses recent challenges in food and agricultural markets, focusing on the impact of climate change on agrifood systems and the effects of food price inflation on retail landscapes and consumer welfare. I will be on the job market in 2024-2025.
+
+<p style="margin-bottom: 40px;">Here is my most up-to-date version [CV](cv_2024_june.pdf).
+
+Contact: <cai00154@umn.edu>
 
 
-I am a PhD student in the Department of Applied Economics at the University of Minnesota. My research interests are in agricultrual economics and environmental economics. 
-
-Specific Topics I am interested in include:
-
-- Climate Change
-- Sustainable Agriculture
-
-I obtained my Bachelor's and Master's degree in Economics from the Zhejiang University.
-
-Here is my [CV](cv_2024_june.pdf).
-
-You can contact me at <cai00154@umn.edu>.
 

@@ -5,15 +5,19 @@ project:
 website:
   title: "Qingyin Cai"
   navbar:
-    left:
-      - href: index.qmd
-        text: About me
-      - research.qmd
-      - teaching.qmd
+    right:
+      - text: "Home"
+        href: index.qmd
+      - text: "RESEARCH"
+        href: research.qmd      
+      - text: "TEACHING"
+        href: teaching.qmd
+      - text: "CV"
+        href: "CV_2024_june.pdf"
 
 format:
   html:
-    theme: sandstone
+    theme: [sandstone, _variables.scss]
     css: styles.css
     toc: false
 

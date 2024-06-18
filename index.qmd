@@ -1,6 +1,6 @@
 ---
 title: "Qingyin Cai"
-image: portrait\headshot_1.jpg
+image: portrait/headshot_1.jpg
 about:
   template: trestles
   image-shape: rectangle

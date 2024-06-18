@@ -13,7 +13,7 @@ website:
       - text: "TEACHING"
         href: teaching.qmd
       - text: "CV"
-        href: "CV_2024_june.pdf"
+        href: cv_2024_june.pdf
 
 format:
   html:

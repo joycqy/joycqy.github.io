@@ -11,7 +11,7 @@ comments: false
 
 <style>
   .quarto-about-trestles .about-entity .about-image {
-    margin-top: 5em !important; /* Adjust this value as needed */
+    margin-top: 6em !important; /* Adjust this value as needed */
   }
 
   @media (max-width: 992px) {
@@ -42,7 +42,7 @@ comments: false
   .column-body-outset div {
     width: 100%;
     margin-bottom: 40px;
-    text-align: center;
+    text-align: left;
   }
 
   .column-body-outset h1 {

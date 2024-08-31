@@ -14,6 +14,7 @@ website:
         href: teaching.qmd
       - text: "CV"
         href: cv_Cai_082024.pdf
+        target: _blank  # This line makes the CV open in a new tab or window
 
 format:
   html:

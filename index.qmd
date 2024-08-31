@@ -4,28 +4,22 @@ image: portrait/headshot_1.jpg
 about:
   template: trestles
   image-shape: rectangle
-  image-width: 18em
-  links: 
-    -   text: Email
-        icon: envelope
-        href: mailto:cai00154@umn.edu
-    -   text: Twitter
-        icon: twitter
-        href: "https://x.com/QingyinCai"      
+  image-width: 18em 
 comments: false
 ---
 ::: {.column-body-outset}
 
 <span style="margin-top: -120px; display: block;">Welcome to my website!
 
-<p style="margin-bottom: 40px;">I'm a PhD candidate in the [Department of Applied Economics](https://apec.umn.edu/) at the University of Minnesota. My fields of interest include agricultural economics, consumer economics, and environmental economics.
+<p style="margin-bottom: 40px;">I'm a PhD candidate in the [Department of Applied Economics](https://apec.umn.edu/) at the University of Minnesota. My fields of interest include agribusiness, food economics, consumer economics, and environmental economics.
 
-<p style="margin-bottom: 40px;">My current research addresses recent challenges in food and agricultural markets, focusing on the impact of climate change on agrifood systems and the effects of food price inflation on retail landscapes and consumer welfare.
+<p style="margin-bottom: 40px;">My research addresses complex and topical economic problems in food and agricultural markets, focusing on the impact of climate shocks on agrifood systems and farmland consolidation, as well as the effects of food price inflation on retail landscapes and consumer welfare.
 
 <p style="margin-bottom: 40px;">**I will be on the job market in the 2024-2025 academic year.**
 
-<p style="margin-bottom: 40px;">Here is my most up-to-date version [CV](cv_2024_june.pdf).
+<p style="margin-bottom: 40px;">Here is my most up-to-date version <a href="cv_Cai_082024.pdf" target="_blank">CV</a>.
 
-Contact: <cai00154@umn.edu>
+Email: <cai00154@umn.edu>
 
+Twitter: [@QingyinCai](https://x.com/QingyinCai)
 

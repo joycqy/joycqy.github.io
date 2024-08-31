@@ -1,0 +1,142 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Matt Braaksma",
+    "section": "",
+    "text": "::: {.column-page}"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "index.html#bio",
+    "href": "index.html#bio",
+    "title": "Matt Braaksma",
+    "section": "Bio",
+    "text": "Bio\nMatthew is a PhD candidate in Applied Economics at the University of Minnesota. He is interested in applied microeconomic research with a focus on environmental and natural resource economics, sustainable development, economic issues of Indigenous communities, and spatial modeling. Specifically, he is working on research involving ecosystem services, economic development, efficient land use, and property rights. He is currently an active member of the Johnson Polasky Lab. Formerly, he worked as a Student Research Associate at the Center for Health Economics and Policy Studies (CHEPS) at San Diego State University. He completed his MA in Economics at San Diego State University and his BA in Business Administration at Eastern Washington University."
+  },
+  {
+    "objectID": "index.html#info",
+    "href": "index.html#info",
+    "title": "Matt Braaksma",
+    "section": "Info",
+    "text": "Info\nThis is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "test_resume.html",
+    "href": "test_resume.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "cynthia.huang@monash.edu"
+  },
+  {
+    "objectID": "test_resume.html#education",
+    "href": "test_resume.html#education",
+    "title": "Curriculum Vitae",
+    "section": "EDUCATION",
+    "text": "EDUCATION\nDoctor of Philosophy – Econometrics and Business Statistics  Monash University Aug 2021 — Present\n\nNew principles and methods for complex data preparation and integration, with applications to official statistics, web-scrapped data and satellite raster images\nMonash Data Futures Institute PhD Top-Up Scholarship (2021-2024)\nExpected submission date: Nov 2024"
+  },
+  {
+    "objectID": "test_resume.html#work-experience",
+    "href": "test_resume.html#work-experience",
+    "title": "Curriculum Vitae",
+    "section": "WORK EXPERIENCE",
+    "text": "WORK EXPERIENCE\n\nData Scientist\nFreelance, Multiple Clients Jan 2020 – June 2021\nProviding data collection, pre-processing, exploratory analysis and modelling services to clients in the early R&D stages of developing data driven products. Projects include:\n\nData description and preliminary product feasibility insights for a start-up real estate bond platform; including assessing suitability of various property transaction databases for use in initial product prototype.\nDevelopment of statistical anomaly detection regimes and key historical insights from internet quality time-series data for use in parametric insurance products, including documenting analysis tools in an R package."
+  },
+  {
+    "objectID": "test_resume.html#presentations-and-workshops",
+    "href": "test_resume.html#presentations-and-workshops",
+    "title": "Curriculum Vitae",
+    "section": "PRESENTATIONS AND WORKSHOPS",
+    "text": "PRESENTATIONS AND WORKSHOPS\n\nTalk: Misadventures with Reproducibility in R (30 Nov 2022, R Ladies Melbourne Meetup)\nTalk: Designing R Packages (4 Oct 2022, Monash EBS Data Science Research Software Study Group)\nTalk: Quarto Websites as Research Compendiums (16 Aug 2022, Monash EBS Data Science Research Software Study Group)\nWorkshop: Writing academic papers with Rmarkdown and friends (9 Aug 2022, Monash University)"
+  },
+  {
+    "objectID": "test_resume.html#references",
+    "href": "test_resume.html#references",
+    "title": "Curriculum Vitae",
+    "section": "References",
+    "text": "References\nAvailable upon request"
+  },
+  {
+    "objectID": "cv.html",
+    "href": "cv.html",
+    "title": "Curriculum Vitae",
+    "section": "",
+    "text": "braak014@umn.edu"
+  },
+  {
+    "objectID": "cv.html#education",
+    "href": "cv.html#education",
+    "title": "Curriculum Vitae",
+    "section": "EDUCATION",
+    "text": "EDUCATION\nDoctor of Philosophy – Applied Economics  University of Minnesota Aug 2022 — Present\n\nMaster of Arts – Economics  San Diego State University Aug 2020 — May 2022\n\nBachelor of Arts – Business Administration  Eastern Washington University Sept 2013 — June 2017\n\nMinors in Economics and Visual Communication Design"
+  },
+  {
+    "objectID": "cv.html#work-experience",
+    "href": "cv.html#work-experience",
+    "title": "Curriculum Vitae",
+    "section": "WORK EXPERIENCE",
+    "text": "WORK EXPERIENCE\n\nData Scientist\nFreelance, Multiple Clients Jan 2020 – June 2021\nProviding data collection, pre-processing, exploratory analysis and modelling services to clients in the early R&D stages of developing data driven products. Projects include:\n\nData description and preliminary product feasibility insights for a start-up real estate bond platform; including assessing suitability of various property transaction databases for use in initial product prototype.\nDevelopment of statistical anomaly detection regimes and key historical insights from internet quality time-series data for use in parametric insurance products, including documenting analysis tools in an R package."
+  },
+  {
+    "objectID": "cv.html#presentations-and-workshops",
+    "href": "cv.html#presentations-and-workshops",
+    "title": "Curriculum Vitae",
+    "section": "PRESENTATIONS AND WORKSHOPS",
+    "text": "PRESENTATIONS AND WORKSHOPS\n\nTalk: Misadventures with Reproducibility in R (30 Nov 2022, R Ladies Melbourne Meetup)\nTalk: Designing R Packages (4 Oct 2022, Monash EBS Data Science Research Software Study Group)\nTalk: Quarto Websites as Research Compendiums (16 Aug 2022, Monash EBS Data Science Research Software Study Group)\nWorkshop: Writing academic papers with Rmarkdown and friends (9 Aug 2022, Monash University)"
+  },
+  {
+    "objectID": "cv.html#references",
+    "href": "cv.html#references",
+    "title": "Curriculum Vitae",
+    "section": "References",
+    "text": "References\nAvailable upon request"
+  },
+  {
+    "objectID": "cv.html#research-experience",
+    "href": "cv.html#research-experience",
+    "title": "Curriculum Vitae",
+    "section": "RESEARCH EXPERIENCE",
+    "text": "RESEARCH EXPERIENCE\n\nStudent Research Associate\nCenter for Health Economics and Policy Studies, San Diego State University Sept 2020 – Aug 2020\nDescription. Projects include:\n\nNote\nNote\n\n\n\nPredoctoral Research Assistant\nDepartment of Economics, San Diego State University Sept 2020 – Aug 2020\nSupervised by Dr. Kangoh Lee and Dr. Jacob Penglase. Description. Projects include:\n\nNote\nNote"
+  },
+  {
+    "objectID": "cv.html#research-interests",
+    "href": "cv.html#research-interests",
+    "title": "Curriculum Vitae",
+    "section": "RESEARCH INTERESTS",
+    "text": "RESEARCH INTERESTS\nEnvironment and Resource Economics | Development Economics | Economic Issues of Indigenous Communities"
+  },
+  {
+    "objectID": "cv.html#skills",
+    "href": "cv.html#skills",
+    "title": "Curriculum Vitae",
+    "section": "SKILLS",
+    "text": "SKILLS\nAdministrative\nG Suite, Git, LaTeX, Microsoft Office Suite\nStatistical\nPython (including spatial), R (including spatial), Stata\nTeaching\nTeaching Assistant for PhD-level Microeconomic Theory Fall 2023\n\nAPEC 8001 - Dr. Paul Glewwe\nAPEC 8002 - Dr. Rodney Smith\n\nTeaching Assistant for PhD-level Econometrics Spring 2024\n\nAPEC 8213 - Dr. Paul Glewwe\nAPEC 8214 - Dr. Marc Bellemare"
+  },
+  {
+    "objectID": "cv.html#working-papers",
+    "href": "cv.html#working-papers",
+    "title": "Curriculum Vitae",
+    "section": "WORKING PAPERS",
+    "text": "WORKING PAPERS\n“Can Anti-Vaping Policies Curb Drinking Externalities? Evidence from E-Cigarette Taxation and Traffic Fatalities”, with Dhaval Dave, Yang Liang, Catherine Maclean, and Joseph Sabia. No. w30670. National Bureau of Economic Research, 2022. - R&R at Journal of Public Economics"
+  },
+  {
+    "objectID": "cv.html#recognitions",
+    "href": "cv.html#recognitions",
+    "title": "Curriculum Vitae",
+    "section": "RECOGNITIONS",
+    "text": "RECOGNITIONS\n\nGraduate Fellowship\nUniversity of Minnesota, Applied Economics 2022\n\n\nPresidential Graduate Research Fellowship\nSan Diego State University 2022\n\n\nMcCuen Endowed Economics Scholarship\nSan Diego State University 2020\n\n\nTransfer Achievement Scholarship\nEastern Washington University 2013"
+  },
+  {
+    "objectID": "cv.html#predoctoral-research-experience",
+    "href": "cv.html#predoctoral-research-experience",
+    "title": "Curriculum Vitae",
+    "section": "PREDOCTORAL RESEARCH EXPERIENCE",
+    "text": "PREDOCTORAL RESEARCH EXPERIENCE\n\nStudent Research Associate\nCenter for Health Economics and Policy Studies, San Diego State University Sept 2020 – Aug 2020\nSupervised by Dr. Joseph Sabia (Director) and Dr. Yang Liang (Co-director).\n\n\n\nResearch Assistant\nDepartment of Economics, San Diego State University Sept 2020 – Aug 2020\nSupervised by Dr. Kangoh Lee and Dr. Jacob Penglase."
+  }
+]

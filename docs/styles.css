@@ -1,12 +1,9 @@
-/* Base styles */
-<style>
-  .quarto-about-trestles .about-image {
-    margin-top: 100em; /* Adjust this value to move the image down */
+/* css styles */
+a {
+    color: black;
   }
 
-  @media (max-width: 992px) {
-    .quarto-about-trestles .about-image {
-      margin-top: 1em; /* Adjust for smaller screens */
-    }
-  }
-</style>
+
+#special-section p {
+  margin-bottom: 1.5em; /* Adjust as needed */
+}

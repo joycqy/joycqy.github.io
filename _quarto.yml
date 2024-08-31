@@ -2,6 +2,7 @@ project:
   type: website
   output-dir: docs
 
+
 website:
   title: "Qingyin Cai"
   navbar:
@@ -21,6 +22,7 @@ format:
     theme: [sandstone, _variables.scss]
     css: styles.css
     toc: false
+    page-layout: full
 
 
 

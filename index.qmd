@@ -1,108 +1,31 @@
 ---
 title: "Qingyin Cai"
-image: portrait/headshot_1.jpg
+image: Cai_headshot.jpg
 about:
   template: trestles
   image-shape: rectangle
-  image-width: 18em 
+  image-width: 16em
+  links:
+    - url: "mailto:cai00154@umn.edu"
+      icon: envelope
+    - icon: twitter
+      url: "https://x.com/QingyinCai"
+
 comments: false
+css: styles.css
 ---
-::: {.column-body-outset}
 
-<style>
-  .quarto-about-trestles .about-entity .about-image {
-    margin-top: 6em !important; /* Adjust this value as needed */
-  }
+## 
+<section id="special-section">
+Welcome to my website!<br>
 
-  @media (max-width: 992px) {
-    .quarto-about-trestles .about-entity .about-image {
-      margin-top: 2em !important; /* Adjust for smaller screens */
-    }
-  }
-</style>
+I’m a PhD candidate in the [Department of Applied Economics](https://apec.umn.edu/) at the University of Minnesota. My fields of interest include agribusiness, food economics, consumer economics, and environmental economics.
 
-<style>
-  /* Basic Reset */
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-  }
+My research addresses complex and topical economic problems in food and agricultural markets, focusing on the impact of climate shocks on agrifood systems and farmland consolidation, as well as the effects of food price inflation on retail landscapes and consumer welfare.
 
-  .column-body-outset {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    max-width: 1200px; /* Increased max-width for even longer rows */
-    margin: auto;
-  }
+<strong>I will be on the job market in the 2024-2025 academic year.</strong>
 
-  .column-body-outset div {
-    width: 100%;
-    margin-bottom: 40px;
-    text-align: left;
-  }
+Here is my most up-to-date version of my <a href="cv_Cai_082024.pdf" target="_blank">CV</a>.
 
-  .column-body-outset h1 {
-    font-size: 1em; /* Same size as other text */
-    font-weight: normal; /* Match font weight */
-  }
-
-  .column-body-outset p {
-    margin: 0;
-    font-size: 1em; /* Consistent font size */
-  }
-
-  .cv-link a {
-    color: #007BFF;
-    text-decoration: none;
-  }
-
-  .cv-link a:hover {
-    text-decoration: underline;
-  }
-
-  @media (min-width: 768px) {
-    .column-body-outset {
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-    }
-
-    .column-body-outset div {
-      width: 100%;
-      margin: 20px 0; /* Adjusted margins to ensure full width usage */
-      text-align: left;
-    }
-  }
-</style>
-
-<div>
-  <h1>Welcome to my website!</h1>
-</div>
-
-<div>
-  <p>I’m a PhD candidate in the [Department of Applied Economics](https://apec.umn.edu/) at the University of Minnesota. My fields of interest include agribusiness, food economics, consumer economics, and environmental economics.</p>
-</div>
-
-<div>
-  <p>My research addresses complex and topical economic problems in food and agricultural markets, focusing on the impact of climate shocks on agrifood systems and farmland consolidation, as well as the effects of food price inflation on retail landscapes and consumer welfare.</p>
-</div>
-
-<div>
-  <p><strong>I will be on the job market in the 2024-2025 academic year.</strong></p>
-</div>
-
-<div class="cv-link">
-  <p>Here is my most up-to-date version <a href="cv_Cai_082024.pdf" target="_blank">CV</a>.</p>
-</div>
-
-<div>
-  <p>Email: <a href="mailto:cai00154@umn.edu">cai00154@umn.edu</a></p>
-  <p>Twitter: <a href="https://x.com/QingyinCai" target="_blank">@QingyinCai</a></p>
-</div>
-
-
-
+Email: <a href="mailto:cai00154@umn.edu">cai00154@umn.edu</a>
+</section>

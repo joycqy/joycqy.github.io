@@ -1,0 +1,32 @@
+project:
+  type: website
+  output-dir: docs
+
+
+website:
+  title: "Qingyin Cai"
+  navbar:
+    right:
+      - text: "Home"
+        href: index.qmd
+      - text: "RESEARCH"
+        href: research.qmd      
+      - text: "TEACHING"
+        href: teaching.qmd
+      - text: "FIELD WORK"
+        href: field_work.qmd
+      - text: "RESOURCES"
+        href: resources.qmd
+      - text: "CV"
+        href: cv_Cai_082024.pdf
+        target: _blank  # This line makes the CV open in a new tab or window
+
+format:
+  html:
+    theme: [sandstone, _variables.scss]
+    css: styles.css
+    toc: false
+    page-layout: full
+
+
+

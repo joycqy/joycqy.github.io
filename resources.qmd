@@ -1,0 +1,25 @@
+
+::: {.column-page}
+
+
+## Conferences
+
+Here is a list of conferences focused on food, agricultural, and environmental economics. Please check the official websites for updates. Feel free to let me know if you are aware of other great conferences that are not included in this list.
+
+
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRnoyyQ9duP9PwB_oZ3zX-_V-AXv9B1ye5z3lBFvv8AQX06jw-o9NaVtATJ1t5uIEwLSPQF_JAuaZg-/pubhtml?widget=true&amp;headers=false" width="100%" height="500"></iframe>
+
+
+## Grants
+
+A list of small grants for graduate students in general economics and related fields is available on Dr. Anne Byrne's [website](https://www.econanne.com/additional-resources).
+
+
+## Other Sources
+There are many great collections of links that were very helpful during my Ph.D. journey in food, agriculture, and environmental economics.
+
+- [Dr. Aaron Smith](https://asmith.ucdavis.edu/data) at UC Berkeley and UC Davis provides a great gallery on Ag Data.
+
+- [Dr. Marc Bellemare](https://marcfbellemare.com/wordpress/the-books-that-have-changed-my-thinking) at the University of Minnesota offers a list of suggested reading on food and agriculture, economic theory, econometrics, and writing.
+
+- [Dr. Shanjun Li](http://li.dyson.cornell.edu/phdRes.php) at Cornell University, [Dr. Elinor Benami](https://www.ebenami.com/resources) at Virgina Tech, [Dr. Tobias Klein](https://www.tobiasklein.ws/ph-d-students) at Tilburg University present a list of helpful resources for Ph.D. students.

@@ -13,12 +13,10 @@ website:
         href: research.qmd      
       - text: "TEACHING"
         href: teaching.qmd
-      - text: "FIELD WORK"
-        href: field_work.qmd
       - text: "RESOURCES"
         href: resources.qmd
       - text: "CV"
-        href: cv_Cai_082024.pdf
+        href: CV_Cai.pdf
         target: _blank  # This line makes the CV open in a new tab or window
 
 format:

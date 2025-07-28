@@ -2,7 +2,7 @@
 ::: {.column-page}
 
 
-## Job Market Paper
+## Working Papers
 **Drought and Fresh Produce Production in California**
 (with Metin Çakır and Timothy Beatty) <a href="JMP_Cai.pdf" target="_blank">[Link]</a>
 
@@ -12,16 +12,6 @@ Awarded the Jason Beddow Second-Year Paper Award (University of Minnesota, 2022)
 
 California's increasingly frequent and intense drought is a pressing problem for the state’s agriculture and the U.S. food supply, as the state is the major producer of many agricultural products. Particularly, California supplies more than half of all fruit and vegetables in the country. This paper examines the severity of the problem by estimating the impacts of the drought on California’s fresh fruit and vegetable production. We estimate panel data models using comprehensive, county-level agriculture, irrigation, and weather data from 2000 to 2019. Our findings indicate that droughts significantly reduce total output, ranging from 1.2\% to 2.2\% for each additional week of drought. The estimated effect is driven by lower yields and fewer harvested acres due to the drought. The drought effects also differ among crops, with thirsty crops and crops with lower economic returns and established insurance programs being disproportionately affected. Results also show the extent to which higher irrigation levels mitigate the adverse effects of drought. Our findings provide insights into the importance of enhancing drought-related risk management and implications for designing cost-effective policies for future adaptation decisions.
 
-<u>Presentations</u>:
-
-- 2025 AEA Allied Social Science Associations Annual Meeting (upcoming)  
-- 2024 Department of Applied Economics Student Seminar (University of Minnesota)
-- 2024 Canadian Agricultural Economics Society (CAES/SCAÉ) Annual Meeting (Winnipeg, Canada)
-- 2022 Agricultural and Applied Economics Association Annual Meeting (Anaheim, CA)
-- 2022 Food Group Seminar (University of Minnesota)
-
-
-## Working Papers
 <details><summary style="color: black;">**Does the Recent Food Price Inflation Differ by Store Format?** (with Metin Çakır and Megan Sweitzer) </summary> <u>Abstract</u>: Recent spikes in food prices have raised significant economic concerns in the United States. Understanding how food price inflation varies across store formats provides valuable insights into consumer behavior and the strategies retailers employ during economic downturns. In this study, we use retail scanner data to construct price indices by store format for various food product groups, allowing us to estimate differences in the rates of price changes across stores. We then estimate a structural store-choice model to examine how these differential rates of price changes affect consumers' preferences for different store formats. Our findings reveal that food price inflation rates vary significantly by store format, with nontraditional stores generally experiencing lower inflation rates than traditional stores across most food categories. These differential price changes also influence consumer store and product choices.</details>
 
 

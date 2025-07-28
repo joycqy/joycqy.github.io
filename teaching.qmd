@@ -1,15 +1,19 @@
 
 ::: {.column-page}
 
+## Instructor
+**University of Minnesota** (Minnesota, United States)
+
+- Graduate Course
+  - Introduction to R Statistical Analysis Software: Summer 2025
+
+
 ## Guest Lecturer
 
 **University of Minnesota** (Minnesota, United States)
 
 - Graduate Course
   - APEC 8803 Applied Consumer Theory: Fall 2024
-
-
-## Guest Instructor
 
 **Institution Commercial Development International Business School** (Shanghai, China)
 
@@ -23,7 +27,6 @@
 
 - Graduate Course
   - Field Survey and Questionnaire Design: Spring 2019
-
 
 - <span style="margin-top: 20px; display: block;"> Undergraduate Course 
   - Insurance Economics: Fall 2018

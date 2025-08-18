@@ -1,0 +1,1394 @@
+---
+title: "Day 1: Basics of R"
+author: "Qingyin Cai"
+institute: |
+  Department of Applied Economics<br>University of Minnesota
+format: 
+  revealjs:
+    pdf-separate-fragments: false  # or true if you want fragment builds in PDF
+    pdf-max-pages-per-slide: 1
+    self-contained: false
+    slide-number: c/t
+    width: 1600
+    height: 900
+    theme: default 
+    scss: ../slide_style/styles.scss
+    fontsize: 1.5em
+    callout-icon: false
+    scrollable: true
+    echo: true
+    cache: true
+    warning: false
+    multiplex: false
+    code-link: true
+    title-slide-attributes:
+      data-background-color: "#e6e6fa"
+    fig-dpi: 400
+    chalkboard: true
+    preview-links: true
+filters:
+  - webr
+  - fontawesome
+webr:
+  packages: [""]
+  cell-options:
+    editor-font-scale: 0.8
+---
+
+```{css}
+/*| echo: false */
+/*| include: false */
+
+figcaption {
+  margin: auto;
+  text-align: center;
+}
+
+.caption{
+   text-align: center;
+}
+
+```
+
+##  {.center}
+
+### Slide Guide
+
+-   Click on the three horizontally stacked lines at the bottom left corner of the slide, then you will see the table of contents, and you can jump to the section you want to see.
+-   Hitting letter "o" on your keyboard and you will have a panel view of all the slides.
+-   You can directly write and run R code, and see the output on slides.
+-   When you want to execute (run) code, hit `command` + `enter` (Mac) or `Control` + `enter` (Windows) on your keyboard. Alternatively, you can click the "Run Code" button on the top left corner of the code chunk.
+
+<br>
+
+```{webr-r}
+# This is an example of R code chunk you will see in this slide deck.
+print("Let's get started!")
+
+```
+
+##  {.center}
+
+<br>
+
+### {{< fa bullseye >}} Learning Objectives
+
+-   To understand the R coding rules.
+-   To understand the basic types of data and structure in R, and to be able to manipulate them.
+-   To be able to use base R functions to do some mathematical calculations.
+-   To be able to create R projects and save and load data in R.
+
+<br>
+
+### {{< fa asterisk >}} Reference
+
+-   [Section 6: Workflow: scripts, R for Data Science](https://r4ds.had.co.nz/workflow-scripts.html){target="_blank"}
+-   [Section 8: Workflow: projects, R for Data Science](https://r4ds.had.co.nz/workflow-projects.html){target="_blank"}
+
+##  {.center}
+
+### {{< fa list >}} Today's outline
+
+1.  [General coding rules in R](#general-rule)
+2.  [Basic data types in R](#basic-data)
+3.  [Types of Data Structures in R](#data-str)
+    a.  [Vector (one-dimensional array)](#vec)
+    b.  [Matrix (Two-dimensional array)](#mat)
+    c.  [Data Frame](#df)
+    d.  [List](#list)
+4.  [Matrix/Linear Algebra in R](#basic-matrix)
+5.  [Loading and Saving Data](#load-save)
+6.  [Exercise problems](#end-exercise)
+7.  [Appendix: Useful base-R functions](#appendix)
+
+## Before you start {.center}
+
+<br>
+
+-   We'll cover many basic topics today.  
+
+-   You don't need to memorize nor completely understand all the contents in this lecture.  
+
+-   At the end of each section, I will include a summary of the key points you need to know. As long as you understand those key points, you are good to go.
+
+
+# General coding rules in R {#general-rule}
+
+## General coding rules in R
+
+::: {.panel-tabset}
+### Basics  
+
+-   **R is object-oriented**: Everything in R is an "object" that you can name and reuse.  
+
+-   **Creating objects**: Use `<-` or `=` to store information in objects.  
+    -   Example: e.g., `x <- 1` assigns 1 to an object called `x`.  
+-   **Objects can be overwritten**: If you use the same name twice, the new value replaces the old one.  
+
+-   **View your objects**: Simply type the object name to see what's stored inside.
+<br>
+
+**Example**
+
+```{webr-r}
+# assign value 1 to an object called "x" 
+x <- 1
+# see what's inside object "x"
+x
+```
+
+```{webr-r}
+# assign the result of a product to an object called "y"
+y <- 2 * 3
+
+# store sum of x and y in z
+z <- x + y
+# see what's inside object "z"
+z
+```
+
+```{webr-r}
+# take z, add 1, and store result back in z
+z <- z + 1
+# Now, the value stored in z is updated.
+z
+```
+### Object Naming  
+
+-   **Object names must start with a letter** (not a number or symbol).  
+-   **Use underscores `_` or dots `.`** to separate words in names.  
+-   **Choose descriptive names** that tell you what the object contains.  
+    -   Good: `student_age`, `exam_scores`
+    -   Avoid: `x`, `data1`, `thing`  
+<br>
+
+```{webr-r}
+# For example, this is not allowed. You will see an error.
+1_test <- "R is fun"
+```
+
+```{webr-r}
+# Instead, you can do this.
+test_1 <- "R is fun"
+test_1
+```
+
+### Packages  
+
+-   **Packages provide extra functions** beyond base R  
+-   **Install once**: `install.packages("package_name")`  
+-   **Load every session**: `library(package_name)`  
+-   **Troubleshooting**: See `could not find function "xxxx"`? → Load the package!
+
+:::
+
+
+# Basic data types in R {#basic-data}
+
+## Overview
+
+::: {.panel-tabset}
+### Data types in R
+
+These are the basic data elements in R.  
+<br>
+
+| Data Type | Description | Example |
+|------------------------|------------------------|------------------------|
+| **numeric** | General number, can be integer or decimal. | `5.2`, `3L` (the `L` makes it integer) |
+| **character** | Text or string data. | `"Hello, R!"` |
+| **logical** | Boolean values. | `TRUE`, `FALSE` |
+| integer | Whole numbers. | `2L`, `100L` |
+| complex | Numbers with real and imaginary parts. | `3 + 2i` |
+| raw | Raw bytes. | `charToRaw("Hello")` |
+| factor | Categorical data. Can have ordered and unordered categories. | `factor(c("low", "high", "medium"))` |
+<br>
+
+-   **Three main data types** you'll use most often: `numeric`, `character`, and `logical`.   
+-   **Text must be in quotes**: 
+    -   Correct: `"Hello"` or `'Hello'`
+    -   Wrong: `Hello` (without quotes)
+
+
+### How to check data types?
+
+Use `class()` or `is.XXX()` to examine the data types.  
+<br>
+
+```{webr-r}
+class(5.2)
+class(2L)
+class(TRUE)
+```
+
+
+### Data Type Conversion
+
+**Convert between data types** using `as.XXX()` functions:  
+
+-   `as.numeric()` → converts to numbers  
+-   `as.character()` → converts to text  
+-   `as.factor()` → converts to categories  
+<br>
+
+```{webr-r}
+test_chr <- "5.2"
+class(test_chr)
+```
+
+```{webr-r}
+# convert to numeric
+test_num <- as.numeric(test_chr)
+test_num
+class(test_num)
+```
+
+```{webr-r}
+# convert from numeric to character type
+as.character(test_num)
+
+# convert from numeric to factor type
+as.factor(test_num)
+```
+:::
+
+
+## Logical values (a.k.a. Boolean values)  
+
+::: {.panel-tabset}
+### Basics  
+
+- Logical values are ``TRUE``, ``FALSE``, and ``NA`` (not available/undefined).  
+
+- They are often generated by **comparison operators**: ``<``, ``>``, ``<=``, ``>=``, ``==``, ``!=``.  
+
+- **Logical operators** include ``&`` (and), ``|`` (or), and ``!`` (not). <br>
+
+- Every comparison evaluates to ``TRUE``, ``FALSE``, or ``NA``.  
+
+- When treated as numbers, ``TRUE`` equals ``1`` and ``FALSE`` equals ``0``.  
+
+- Logical values can be used as **indices** to subset vectors or data.  
+
+
+### Example
+
+```{webr-r}
+#--- true or false ---#
+5 == 5
+5 != 4
+5 > 4
+5 >= 4
+5 < 4
+5 <= 4
+
+5 == 5 &  5 != 4
+5 == 5 &  5 < 4
+5 == 5 | 5 < 4
+
+TRUE + TRUE
+TRUE + FALSE
+```
+:::
+
+## Summary {.center}  
+<br>
+
+::: {.callout-important title="Key points" style="font-size: 1.5em;"}
+
+- R defines several basic data types, including ``numeric``, ``character``, and ``logical``.  
+
+- Use the ``class()`` function to check the data type of an object.  
+
+- Use ``as.XXX()`` functions to convert an object from one type to another.  
+
+- Logical values play an important role in many R operations. 
+
+::: 
+
+
+
+# Types of Data Structures in R {#data-str}
+
+------------------------------------------------------------------------
+
+## Types of Data Structures in R {.center}
+
+R provides several types of data structures for storing data.
+
+<br>
+
+| Data Structure | Description | Creation Function | Example |
+|------------------|------------------|------------------|------------------|
+| Vector | One-dimensional; Holds elements of the **same type**. | `c()` | `c(1, 2, 3, 4)` |
+| Matrix | Two-dimensional; Holds elements of the **same type**. | `matrix()` | `matrix(1:4, ncol=2)` |
+| Array | Multi-dimensional; Holds elements of the **same type**. | `array()` | `array(c(1:12), dim = c(2, 3, 2))` |
+| List | Can hold elements of **different types**. | `list()` | `list(name="John", age=30, scores=c(85, 90, 92))` |
+| Data Frame | Like a table; Each column can hold different data types. This is the most common data structure. | `data.frame()` | `data.frame(name=c("John", "Jane"), age=c(30, 25))` |
+
+<br>
+
+## Vector (one-dimensional array) {#vec}
+
+::: {.panel-tabset}
+### Basics
+
+-   A vector object is a collection of elements of the same type.  
+-   Vectors can contain numbers, characters, or logical values.  
+-   Use `c()` to create a vector or to combine vectors (`c` stands for combine).  
+
+<br>
+
+**Basic syntax**
+
+``` r
+c(element1, element2, element3, ...)
+```
+
+<br>
+
+You can name each element in a vector:
+
+``` r
+c(x1 = element1, x2 = element2, x3 = element3, ...)
+```
+
+### Example
+
+```{webr-r}
+# Empty vector
+c()
+```
+
+```{webr-r}
+# Create a numeric vector
+x <- c(1, 2, 3)
+x
+```
+
+```{webr-r}
+# Combine another numeric vector and x
+y <- c(x, c(4, 5))
+y
+```
+
+```{webr-r}
+# Create a character vector
+z <- c("a", "b", "c")
+
+# See what happens when you combine numeric and character vector
+c(x, z) #numeric is always coerced to character (power relationship, character > numeric > logical)
+```
+:::
+
+## Vector: How to manipulate?
+
+::: panel-tabset
+### Indexing
+
+**Basics**
+
+-   Use square brackets `[]` to extract one or more elements from a vector by their position.  
+
+-   If a vector has names, you can extract elements using their names.  
+
+-   To update an element, assign a new value to the position (or name) you want to change.
+<br>
+
+**Example**
+
+```{webr-r}
+# --- Create a numeric vector --- #
+x <- c(x1 = 5, x2 = -8, x3 = 2, x4 = -1)
+x
+```
+
+```{webr-r}
+# --- Get the 1nd and 2nd element of x --- #
+index_vec <- c(1, 2)
+x[index_vec] #or simply you can do x[c(1, 2)]
+```
+
+```{webr-r}
+# --- Get x1 and x2 --- #
+index_vec <- c("x1", "x2")
+x[index_vec] #or simply you can do x[c("x1", "x2")]
+```
+
+```{webr-r}
+# --- Modify --- #
+x[c(1, 2)] <- c(100, 200)
+x
+```
+
+### Logical Vectors
+
+-   A logical vector contains only logical values (`TRUE` and `FALSE`).  
+-   Logical vectors can be used as index vectors: only elements matching `TRUE` are returned.  
+
+**Example**
+
+```{webr-r}
+# --- Create a numeric vector --- #
+x <- c(5, -8, 2, -1)
+
+# === For example, let's get the positive elements === #
+# create a logical vector (condition)
+y <- x > 0
+# Let's see what's inside y
+y
+```
+
+```{webr-r}
+# subset the data
+x[y] #or you can simply do x[x>0]
+```
+:::
+
+## In-class Exercise
+
+The following code randomly samples 30 numbers from a uniform distribution between 0 and 1, and stores the result in `x`.
+
+```{webr-r}
+# Run this code to work on the exercise problems.
+set.seed(3746)
+x <- runif(n = 30, min = 0, max = 1)
+x # see what's inside x
+```
+
+**Questions**
+<br>
+```{webr-r}
+# Q1: Extract the 10th and the 15th elements of `x`.
+# Write your answer here
+
+```
+
+```{webr-r}
+# Q2: Extract elements larger than $0.5$.
+
+```
+
+```{webr-r}
+# Q3: Replace the 10th and the 15th elements of `x` to 0.
+
+```
+
+```{webr-r}
+# Q4: If an element of `x` is larger than $0.9$, replace it with $1$.
+
+```
+
+```{r}
+#| include: false
+#| eval: false
+
+set.seed(3746)
+x <- runif(n = 30, min = 0, max = 1)
+
+# 1.1
+x[c(10,15)]
+x[x > 0.5]
+x[c(10,15)] <- 0
+x[x > 0.9] <- 1
+```
+
+## Matrix (Two-dimensional array) {#mat}
+
+::: {.panel-tabset}
+### Basics
+
+-   A matrix is a collection of elements of the same type arranged in rows and columns (essentially a vector with an added dimension attribute).  
+
+-   In practice, matrices are less common for real-world data storage and are used mainly for linear algebra operations.  
+
+-   Use the `matrix()` function to create a matrix.
+
+<br>
+
+**Syntax**
+
+``` r
+matrix(data = vector_data, nrow = number_of_rows, ncol = number_of_column, byrow = FALSE)
+```
+
+<br>
+
+-   You need to specify the `vector_data` and the `number_of_rows` and `number_of_columns`.  
+
+-   If the length of `vector_data` is a multiple of `number_of_columns` (or `number_of_rows`), R fills in the other dimension automatically.  
+
+-   By default, values are filled by column. Use `byrow = TRUE` to fill by row.
+
+### Example 1
+
+```{webr-r}
+# Create a numeric matrix
+m_num <- matrix(1:6, nrow = 3)
+m_num
+
+# use dim() to see the dimension of the matrix
+dim(m_num)
+```
+
+```{webr-r}
+# Create a numeric matrix
+m_num <- matrix(1:6, nrow = 3, byrow = TRUE)
+m_num
+```
+
+```{webr-r}
+# Create a matrix of characters
+m_chr <- matrix(c("a", "b" , "c", "d", "e", "f"), nrow = 3)
+m_chr
+```
+
+### Example 2
+
+You can also create a matrix by combining multiple vectors using `cbind()` or `rbind()` functions.
+
+-   `rbind()` function combines vectors by row.  
+
+-   `cbind()` function combines vectors by column.  
+
+```{webr-r}
+vec_a <- 1:4
+vec_b <- 4:7
+
+mat1 <- cbind(vec_a, vec_b)
+mat1
+
+mat2 <- rbind(vec_a, vec_b)
+mat2
+```
+:::
+
+## Matrix: How to manipulate
+
+::: {.panel-tabset}
+### Indexing
+
+-   You can access matrix elements with `[]`.  
+
+-   Specify the row index and column index: `[row, col]`.  
+
+-   Leave one index blank to select an entire row or column.  
+<br>
+
+**Example**
+
+```{webr-r}
+# --- Create a matrix of numbers --- #
+m_num <- matrix(1:6, nrow = 3)
+m_num
+
+# --- Get the elements in the 1st row and 2nd column --- #
+m_num[1, 2]
+```
+
+```{webr-r}
+# --- Get the 1st row --- #
+m_num[1, ]
+
+# --- Get the the first two rows --- #
+m_num[1:2, ]
+```
+
+```{webr-r}
+# --- Modify a specific element --- #
+m_num[1, 2] <- 100
+m_num
+```
+
+### Miscellaneous
+
+You can add column names and row names to a matrix using `colnames()` and `rownames()` functions. If a matrix has column names and row names, you can use the names as the index.
+
+```{webr-r}
+# Create a matrix of numbers
+m_num <- matrix(1:6, nrow = 3)
+
+# Add column names
+colnames(m_num) <- c("A", "B")
+m_num
+
+# Add row names
+rownames(m_num) <- c("a", "b", "c")
+
+# --- Get the value of row "c" and column "B"  --- #
+m_num["c", "B"]
+```
+
+```{webr-r}
+# --- Get the value of row "c" and column "B"  --- #
+m_num["c", "B"]
+```
+:::
+
+## Matrix: Exercise Problem (Optional)
+
+Use the following matrix:
+
+```{webr-r}
+set.seed(3746)
+num <- runif(n = 30, min = 0, max = 1)
+mat <- matrix(data = num, nrow = 6)
+colnames(mat) <- c("A", "B", "C", "D", "E")
+rownames(mat) <- c("a", "b", "c", "d", "e", "f")
+mat # see what's inside mat
+```
+
+**Questions**
+<br>
+```{webr-r}
+# Q1: Extract the element in the 2nd row and 3rd column.
+# Write your code here
+```
+
+```{webr-r}
+# Q2: Extract the 2nd row.
+
+```
+
+```{webr-r}
+# Q3: Subset the rows where column "A" is larger than 0.5. (Use logical indexing).
+
+```
+
+```{r}
+#| include: false
+#| eval: false
+
+mat[, 2:3]
+
+mat[2,]
+
+vec_index <- mat[,"A"] > 0.5
+mat[vec_index,]
+```
+
+
+## Data Frame {#df}
+
+::: {.panel-tabset}
+### Basics
+
+-   A `data.frame` class object is similar to a matrix, but each column can store a different data type.  
+
+-   It is designed for tabular data, which makes it the most common structure in real-world datasets.  
+
+**Syntax**
+
+``` r
+data.frame(column_1 = vector_1, column_2 = vector_2)
+```
+
+**Example**
+
+```{webr-r}
+# create a data.frame 
+df_student <- 
+  data.frame(
+    Name = c("Alice", "Ben", "Clara"),
+    Age = c(20, 22, 21),
+    Major = c("Economics", "Statistics", "Biology")
+  )
+df_student
+```
+
+-   If you do not provide column names, R automatically assigns default names (e.g., `X1`, `X2`, `X3`).
+
+
+### Indexing
+
+- You can access elements of a `data.frame` using square brackets `[]`.  
+
+- Specify the row and column index, similar to a matrix.  
+
+- Indexing options include:  
+  - **Positional index** (e.g., `df[1, 2]`)  
+  - **Column names** (e.g., `df[ , "Age"]`)  
+  - **Logical vectors** (e.g., `df[df$Age > 20, ]`)  
+
+```{webr-r}
+# extract the elements in the 1st row 
+df_student[1, ]
+
+# extract the elements in the Name and Major columns
+df_student[, c("Name", "Major")]
+
+# find students who are older than 20
+df_student[df_student$Age > 20, "Name"]   # student$Age > 20 returns a logical vector
+```
+
+### \$ and \[\[ \]\] operator
+
+-   You can extract a single column from a `data.frame` using the `$` or `[[ ]]` operator.  
+
+-   `$` and `[[ ]]` can only return **one column at a time** as a vector, while `[]` can select multiple columns.  
+  - Type `?"$"`, `?"["`, and `?"[["` in the Console for details.  
+
+-   Inside `[[ ]]`, provide the column name as a character (e.g., `df[["Age"]]`).  
+
+-   Why this matters: many R functions (`mean()`, `sum()`, `sqrt()`, etc.) work on **vectors**, and `$` / `[[ ]]` are the fastest way to extract a vector for calculations.  
+
+<br>
+
+```{webr-r}
+df_student[["Age"]] #returns a vector
+
+df_student$Age #returns a vector
+```
+
+### Adding and Removing Columns
+
+You can add a new column to a `data.frame` object using the `$` operator.
+
+**Syntax**
+
+``` r
+data_frame$new_column <- vector_data
+```
+
+- A new column added to a `data.frame` must have the same length as the number of rows.  
+
+- If the length does not match, R will **recycle** the values to fill the column.  
+
+<br>
+
+```{webr-r}
+# Add a new column with graduation years
+df_student$GraduationYear <- c(2025, 2024, 2026)
+```
+
+```{webr-r}
+# Overwrite the column with a single value (recycled across rows)
+df_student$GraduationYear <- 2025
+
+# Add a new column with the same value for all rows
+df_student$Semester <- "Fall"
+```
+
+```{webr-r}
+# --- Remove the Semester column --- #
+df_student$Semester <- NULL
+```
+
+### Miscellaneous
+
+```{webr-r}
+# Column names
+names(df_student)   # or colnames(df_student)
+
+# Change the column names to lower case
+names(df_student) <- tolower(names(df_student))
+```
+:::
+
+## In-class Exercise
+
+We will use the built-in dataset `mtcars` for this exercise. Run the following code to load the data.
+
+```{webr-r}
+# --- Load data --- #
+data(mtcars)
+?mtcars # to see the description of the yield_data
+
+# --- Take a look at the data --- #
+# head() function shows the first several rows of the data
+head(mtcars)
+```
+
+**Questions**
+
+```{webr-r}
+# Q1: Extract the rows corresponding to cars with row numbers 1, 5, and 10 using numeric indexing.  
+# Write your code here
+```
+
+```{webr-r}
+# Q2: Add a new column to the `mtcars` data frame called `power_to_weight_ratio`, calculated as the ratio of horsepower (`hp`) to weight (`wt`).
+
+```
+
+```{webr-r}
+# Q3: Create a new data frame called `efficient_cars` that contains cars with `mpg > 20` and `power_to_weight_ratio < 5`.  
+
+```
+
+```{webr-r}
+# Q4: *(Optional)* Sort the `efficient_cars` data frame by the `power_to_weight_ratio` column in ascending order and display the result.  
+   # Hint 1: Use the `order()` function to sort the data frame.  
+   # Hint 2: Use `order(efficient_cars$power_to_weight_ratio)` as an index vector.    
+
+```
+
+```{r}
+#| include: false
+#| eval: false
+
+df_mtcars <- data(mrcars)
+
+df_mtcars[c(1, 5, 10),  ]
+
+df_mtcars$power_to_weight_ratio <- df_mtcars$hp / df_mtcars$wt
+
+efficient_cars <- df_mtcars[df_mtcars$mpg > 20 & df_mtcars$power_to_weight_ratio < 5, ]
+efficient_cars
+
+efficient_cars[order(efficient_cars$power_to_weight_ratio), ]
+```
+
+
+## with() and within()
+
+- The `with()` function evaluates an expression **inside a data frame**.  
+  - Example: `with(df_student, mean(Age))` instead of `mean(df_student$Age)`  
+
+- The `within()` function is similar, but it allows you to **modify the data frame** directly.  
+  - Example: `df_student <- within(df_student, { GPA2 <- GPA^2 })`  
+
+- Using these functions helps avoid repeatedly typing the data frame name and `$`.  
+
+**Example**
+
+```{webr-r}
+# --- Plot --- #
+plot(x = as.factor(df_student$major), y = df_student$age)
+
+# instead, you can do:
+with(df_student, plot(x = as.factor(major), y = age))
+
+with(df_student, mean(age))   # same as mean(df_student$age)
+```
+
+```{webr-r}
+# --- Add multiple columns --- #
+df_student$graduation_year <- c(2025, 2024, 2026)
+df_student$semester <- c("Fall", "Spring", "Fall")
+
+# instead, you can do
+new_df_student <- within(df_student, {
+  graduation_year <- c(2025, 2024, 2026)
+  semester <- c("Fall", "Spring", "Fall")
+})
+```
+
+## List {#list}
+
+::: {.panel-tabset}
+### Basics
+
+-   A list in R can store elements of different types and sizes: numbers, characters, vectors, matrices, data frames, or even other lists.  
+
+-   A list is a flexible container that can hold any combination of data structures.  
+
+-   Use the `list()` function to create a list.  
+
+
+```{webr-r}
+list_a <- list(1, 2, "3", 4)
+list_a
+
+# You can even store `data.frame` in a list.
+example_list <- 
+  list(
+    num = 1:3,
+    df  = df_student
+  )
+```
+
+### Indexing
+
+-   You can access list elements using `$`, `[]`, or `[[ ]]`.  
+
+-   `[]` returns a list containing the selected elements.  
+
+-   `[[ ]]` returns a single element itself (not wrapped in a list).  
+
+-   `$` is shorthand for `[[ ]]`, but it only works if the list elements are named.  
+
+
+```{webr-r}
+# --- Using [ ] returns a list ---
+example_list[1]        # or example_list["num"], still a list containing 'numbers'
+```
+
+```{webr-r}
+# --- Using [[ ]] returns the element itself ---
+example_list[[1]]       # or example_list[["num"]], returns the vector 1:3
+example_list[["num"]] # same as above
+```
+
+```{webr-r}
+# --- Try with the data frame element ---
+example_list[2]         # list containing the data frame
+example_list[[2]]       # the data frame itself
+```
+
+:::
+
+## Summary {.center}  
+<br>
+
+::: {.callout-important title="Key points" style="font-size: 1.5em;"}
+
+-   Know how to create the main data structures in R: `vector`, `matrix`, `data.frame`, and `list`.  
+    -   Vectors and matrices store **one data type**.  
+    -   Data frames and lists can store **different data types**.  
+<br>
+
+-   Learn how to access, subset, and modify elements using indexing.  
+    -   Indexing can be **positional**, **logical**, or **by name**.  
+    -   Operators include `[]`, `$`, and `[[ ]]`.  
+
+::: 
+
+# Matrix/Linear Algebra in R {#basic-matrix}
+
+------------------------------------------------------------------------
+
+::: {.panel-tabset}
+### Basic arithmetics
+
+-   You do not need to memorize the operators for remainder and quotient.  
+
+```{webr-r}
+#--- addition ---#
+2 + 3
+#--- subtraction ---#
+6 - 2
+#--- multiplications ---#
+6 * 2
+#--- exponentiation ---#
+2 ^ 3
+#--- division ---#
+6 / 2
+#--- remainder ---#
+9 %% 4
+#--- quotient ---#
+9 %/% 4
+```
+
+### Vector calculation
+
+-   Arithmetic operations on vectors are performed **element-wise**.  
+
+-   This means the operation is applied to elements in the **same position** of each vector.  
+
+```{webr-r}
+a <- c(1, 3, 2)
+b <- c(5, 7, 6)
+
+# --- Addition --- #
+a + 1
+a + b
+```
+
+```{webr-r}
+# --- Subtraction --- #
+a - 1
+b - a
+```
+
+```{webr-r}
+# --- Multiplication --- #
+a*2
+a*b
+```
+
+### Matrix calculation
+
+-   By default, `*` does **element-wise multiplication**.  
+
+-   To perform true **matrix multiplication**, use the `%*%` operator.  
+
+```{webr-r}
+mat_a <- matrix(1:4, nrow = 2)
+mat_b <- matrix(4:7, nrow = 2)
+
+#--- Matrix Addition and Subtraction ---#
+mat_a + mat_b
+mat_b - mat_a
+```
+
+```{webr-r}
+# --- Matrix Multiplication using %*% operator --- #
+mat_a %*% mat_b
+
+mat_a * mat_b # element-wise multiplication
+```
+
+```{webr-r}
+# --- Matrix Transpose --- #
+t(mat_a)
+```
+
+:::
+
+# Loading and Saving Data in R {#load-save}
+
+------------------------------------------------------------------------
+
+## R base functions for data import and export
+
+-   Like other softwares (e.g., Stata, Excel) do, R has two native data formats: `.Rdata` (or `.rdata`) and `.Rds` (or `.rds`).  
+    -   `.Rdata` is used to save multiple R objects.
+    -   `.Rds` is used to save a single R object.
+
+<br>
+
+::::: columns
+::: {.column width="50%"}
+**.Rdata** format
+
+-   Load data:
+
+`load("path_to_Rdata_file")`
+
+-   Save data:
+
+`save(object_name1, object_name2, file = "path_to_Rdata_file")`
+:::
+
+::: {.column width="50%"}
+**.Rds** format
+
+-   Load data:
+
+`readRDS("path_to_Rds_file")`
+
+-   Save data:
+
+`saveRDS(object_name, file = "path_to_Rds_file")`
+:::
+:::::
+
+
+## Setting the working directory
+
+:::::: {.panel-tabset}
+### Basics
+
+[To access to the data file, you need to provide the path to the file (the location of the data file).]{style="color:red;"}
+
+<br>
+
+**Example**
+
+Suppose that I want to load `data_example.rds` in the Data folder. On my computer, the full path (i.e., absolute path) to the file is `/Users/qingyin/Dropbox/Teaching/R_Review_2025/Data/data_example.rds`.
+
+```{r}
+#| eval: false
+# this code only works in my local machine
+df_example <- readRDS(file = "/Users/qingyin/Dropbox/Teaching/R_Review_2025/Data/data_example.rds")
+```
+
+<br>
+
+**Why avoid hard-coding full paths?**
+
+-   Typing the full file path every time is cumbersome and slows you down.  
+
+-   Hard-coded paths make your code **less portable**:  
+    -   Team members may have different folder structures.  
+    -   Code that works on your computer might fail on theirs.  
+
+
+### Working Directory
+    
+-   The **working directory** is the folder where R looks for files to load and saves files you create.  
+  -   Check the current working directory with `getwd()`.  
+  -   By default, R uses your **home directory** (or the project folder if you’re in an R Project).  
+    
+
+### setwd()
+
+-   If you often import or save data in a specific folder, it helps to set that folder as the **working directory**.  
+
+-   Use `setwd()` to change the working directory:  
+
+**Example**
+
+In my case, I set the working directory to the `R_Review_2025` folder.
+
+```{r}
+#| eval: false
+setwd("/Users/qingyin/Dropbox/Teaching/R_Review_2025")
+```
+
+Now, R will look for the data file in the `R_Review_2025` folder by default. So, I can load the data using *relative path*, not *absolute path*.
+
+```{r}
+#| eval: false
+df_example <- readRDS(file = "Data/data_example.rds")
+```
+
+<br>
+
+**Problems**
+
+-   `setwd()` still relies on an **absolute path**, which can vary across people.  
+    -   e.g., one person saves files in Dropbox, another in Google Drive).  
+
+-   This means `setwd()` does **not fully solve the collaboration problem**.  
+    -   code may still break if teammates have different folder structures.  
+
+
+### R project
+
+::: {.panel-tabset}
+### What is it?
+
+> "R experts keep all the files associated with a project together — input data, R scripts, analytical results, figures. This is such a wise and common practice that RStudio has built-in support for this via **projects**." - [R for Data Science Ch 8.4](https://r4ds.had.co.nz/workflow-projects.html?q=working%20directory#rstudio-projects)
+
+<br>
+
+**RStudio Projects**
+
+-   An RStudio project is a way to organize your work.
+
+-   When you open a Project, R automatically sets the working directory to the folder containing the `.Rproj` file — no need for `setwd()`.  
+
+-   As long as the folder structure inside the Project is consistent, you can share code with teammates and relative paths will work for everyone.  
+
+
+### Let's create a project!
+
+Follow this steps illustrated in this document: [R for Data Science Ch 8.4](https://r4ds.had.co.nz/workflow-projects.html?q=working%20directory#rstudio-projects)
+
+
+### Load the data
+
+-   In RStudio, check the **top-right corner** of the window to see the active Project name.  
+  -   Alternatively, open a Project by double-clicking the `.Rproj` file in Finder (Mac) or File Explorer (Windows).  
+
+-   Use `getwd()` to confirm the current working directory — it should be the Project folder.  
+
+-   Load the `data_example.rds` data file with `readRDS()`. 
+
+:::
+:::::::
+
+
+## Loading data other than .Rds (.rds) format
+
+::: {.panel-tabset}
+### Basics
+
+-   R can load data from various formats including `.csv`, `.xls(x)`, and`.dta`.
+-   There exists many functions that can help you to load data:
+    -   `read.csv()` to read a `.csv` file.  
+    -   `read_excel()` from the `readxl` package to read data sheets from an `.xls(x)` file.  
+    -   `read.dta13()` function from the `readstata13` package to read a STATA data file (`.dta`).   
+<br>
+
+**Use import() function of the rio package**
+
+-   **But** `import()` function from the `rio` package might be the most convenient one to load various format of data.
+    -   Unlike, `read.csv()` and `read.dta13()` which specialize in reading a specific type of file, `import()` can load data from various sources.
+    
+    
+### Let's do it
+
+In `Data` folder, `data_example` data is saved with three different formats: `data_example.csv`, `data_example.dta`, and `data_example.xlsx`. Let's load the data using `import()` function on your Rstudio.
+
+```{webr-r}
+# If you don't have the rio package, install it by running the following code:
+# install.packages("rio")
+library(rio)
+```
+:::
+
+
+## Saving the data
+
+-   You can save data in many formats (`.csv`, `.dta`, `.xlsx`, etc.).  
+-   **But** unless you need compatibility with other software, it’s best to save data in `.rds`.  
+    -   How: `saveRDS(object_name, path_to_save)`
+
+<br>
+
+**Why prefer `.rds`?**  
+
+-   Designed for R — no reason to use another format if you work only in R.  
+-   **Faster and more efficient** for saving and loading.  
+-   Produces **smaller file sizes** compared to `.csv` or `.xlsx` when data gets larger.  
+-   (Try it! Check the size of the `data_example` dataset saved in different formats.)  
+
+<br>
+
+Let's try!
+
+-   Load the `data_example` data in the `Data` folder.
+
+```{webr-r}
+df_example <- readRDS("Data/data_example.rds")
+# see the first several rows
+head(df_example)
+```
+
+
+## Summary {.center}  
+<br>
+
+::: {.callout-important title="Key points" style="font-size: 1.5em;"}
+
+-   Rstudio project (`.Rproj`) is a useful tool to organize your work. As long as the folder structure under the `.Rproj` is the same, you can share the code involving data loading with your team members.  
+<br>
+-   To load data:
+    -   use `readRDS()` function for `.Rds` (`.rds`) format.  
+    -   you can use `import()` function from the `rio` package for various format.  
+<br>    
+-   To save the data, it is recommended to use `.rds` format and use `saveRDS()` function.
+
+::: 
+
+# After-class Exercise Problems {#end-exercise}
+
+## Exercise Problems 1: Vector
+
+::: {.panel-tabset}
+### Problems
+
+1.  Create a sequence of numbers from 20 to 50 and name it `x`. Let's change the numbers that are multiples of 3 to 0.  
+
+2.  `sample()` is commonly used in Monte Carlo simulation in econometrics. Run the following code to create `r`. What does it do? Use `?sample` to find out what the function does.  
+
+```{webr-r}
+#| autorun: true
+set.seed(12345) #don't worry about this
+r <- sample(1:100, size=20, replace = TRUE)
+```
+
+3.  Find the value of mean and SD of vector `r` without using `mean()` and `sd()`.  
+
+4.  Figure out which position contains the maximum value of vector `r`. (use `which()` function. Run `?which()` to find out what the function does.).  
+
+5.  Extract the values of `r` that are larger than 50.  
+
+6.  Extract the values of `r` that are larger than 40 and smaller than 60.  
+
+7.  Extract the values of `r` that are smaller than 20 or larger than 70.  
+
+### Answers
+
+```{webr-r}
+# === Part 1 === #
+x <- 20:50
+# using `:` operator is the most basic way to create a sequence of numbers, but it only works with integer numbers with a step of 1.
+# seq() function is more flexible. For example, you can create a sequence of numbers, , incremented by 0.5.
+# x <- seq(from = 20, to = 50, by = 0.5)
+x[x %% 3 == 0] <- 0
+
+# === Part 2 === #
+# In this code, sample() function creates a random sample of numbers with size 20 (size=20) from a range 1 to 100 (x = 1:100) allowing replacement (replace = TRUE).
+
+# === Part 3 === #
+# mean
+mean_r <- sum(r) / length(r)
+# SD
+sd_r <- sqrt(sum((r - mean_r)^2) / (length(r) - 1))
+
+# === Part 4 === #
+max_index <- which(r == max(r))
+
+# === Part 5 === #
+r_50 <- r[r > 50]
+
+# === Part 6 === #
+r_40_60 <- r[r > 40 & r < 60]
+
+# === Part 7 === #
+r_20_70 <- r[r < 20 | r > 70]
+```
+
+:::
+
+
+## Exercise Problem 2: Data Frame
+
+::: {.panel-tabset}
+### Problems
+
+1.  Load the file `nscg17tiny.dta`. You can find the data in the `Data` folder.  
+    -   This data is a subset of the National Survey of College Graduates (NSCG) 2017, which collects data on the educational and occupational characteristics of college graduates in the United States.  
+    
+2.  Each row corresponds to a unique respondent. Let's create a new column called "ID". There are various ways to create an ID column. Here, let's create an ID column that starts from 1 and increments by 1 for each row.  
+
+3.  To take a quick look at the summary statistics of a specific column, `summary()` function is useful. Use `summary()` to create a table of the descriptive statistics for hrswk. You'll provide hrswk column to `summary()` as a vector.  
+
+4.  Create a new variable in your data that represents the z-score of the hours worked (use `hrswk` variable).  
+$Z = (x - \mu)/\sigma$, where $Z = \text{standard score}$, $x =\text{observed value}$, $\mu = \text{mean of sample}$, and $\sigma = \text{standard deviation of the sample}$.  
+
+5.  Calculate the share of observations in your data sample with above average hours worked.  
+
+### Answer
+
+```{webr-r}
+# === Part 1 === #
+nscg17 <- rio::import("Data/nscg17tiny.dta")
+
+# === Part 2 === #
+nscg17$ID <- 1:nrow(nscg17)
+
+# === Part 3 === #
+summary(nscg17$salary)
+
+# === Part 4 === #
+nscg17$z_hrswk <- (nscg17$hrswk - mean(nscg17$hrswk)) / sd(nscg17$hrswk)
+# or using with() function, you can write the code more concisely
+# nscg17$z_hrswk2 <- with(nscg17, (hrswk - mean(hrswk)) / sd(hrswk))
+
+# Note: For part 2 and 3, you can use within() function to create new columns more concisely.
+# nscg17 <- 
+#   within(
+#     nscg17, {
+#       ID <- 1:nrow(nscg17)
+#       z_hrswk <- (hrswk - mean(hrswk)) / sd(hrswk)
+#     }
+
+# === Part 5 === #
+# create a logical vector that indicates whether the hours worked is above average
+above_avg_hrswk <- with(nscg17, z_hrswk > mean(z_hrswk)) # you can get the same result by using `hrswk`.
+# subset the data
+nscg17_above_avg_hrswk <- nscg17[above_avg_hrswk, ]
+# calculate the share of observations with above average hours worked
+share_above_avg_hrswk <- nrow(nscg17_above_avg_hrswk) / nrow(nscg17)
+share_above_avg_hrswk
+```
+
+:::
+
+# Appendix: Useful base-R functions {#appendix}
+
+## Appendix: A List of Useful R Built-in Functions {#useful-functions}
+
+::: panel-tabset
+### For data manipulation
+
+| Function                   | Description                                  |
+|----------------------------|--------------------------------------------|
+| `length()`                 | get the length of the vector and list object |
+| `nrow()`,`ncol()`          | get the number of rows or columns            |
+| `dim()`                    | get the dimension of the data                |
+| `rbind()`,`cbind()`        | Combine R Objects by rows or columns         |
+| `colMeans()`, `rowMeans()` | calculate the mean of each column or row     |
+| `with` and `within()`      | You don't need to use \`---                  |
+
+<br>
+
+### For numerical manipulation
+
+| Function | Description |
+|--------------------------------|----------------------------------------|
+| `sum(), mean(), var(), sd(), cov(), cor(), max(), min(), abs(), round()` |  |
+| `log()` and `exp()` | Logarithms and Exponentials |
+| `sqrt()` | Computes the square root of the specified float value. |
+| `seq()` | Generate a sequence of numbers |
+| `sample()` | randomly sample from a vector |
+| `rnorm()` | generate random numbers from normal distribution |
+| `runif()` | generate random numbers from uniform distribution |
+
+<!-- end panel:functions  -->
+:::

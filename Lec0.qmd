@@ -7,6 +7,8 @@ date: last-modified
 date-format: "[Summer 2025]"
 format: 
   revealjs:
+    pdf-separate-fragments: false  # or true if you want fragment builds in PDF
+    pdf-max-pages-per-slide: 1
     self-contained: false
     slide-number: c/t
     width: 1600

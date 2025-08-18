@@ -13,7 +13,7 @@ format:
     height: 900
     theme: default 
     scss: ../slide_style/styles.scss
-    fontsize: 1.5em
+    fontsize: 1.8em
     callout-icon: false
     scrollable: true
     echo: true

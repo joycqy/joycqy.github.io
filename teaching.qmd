@@ -6,7 +6,7 @@
 
 - Graduate Course
   - Introduction to R Statistical Analysis Software: Summer 2025
-    - [Lecture 0](Lec0.html) [Download Slides](https://joycqy.github.io/Lec0.html?print-pdf)
+    - [Lecture 0](Lec0.html)
     - [Lecture 1](Lec1.html)
     
 

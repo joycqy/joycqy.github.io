@@ -6,6 +6,7 @@
 
 - Graduate Course
   - Introduction to R Statistical Analysis Software: Summer 2025
+    - [Lecture 0](Lec0.html)
 
 
 ## Guest Lecturer

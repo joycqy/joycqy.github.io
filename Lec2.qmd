@@ -804,15 +804,25 @@ Suppose that we want to organize the data so that each student’s math and read
 
 ```{webr-r}
 #| autorun: true
+
+student_long <- data.table(
+  student = rep(c("Alice", "Bob", "Charlie", "Diana"), each = 2),
+  year = rep(c(2021, 2022), times = 4),
+  math = c(78, 85, 92, 95, 88, 90, 70, 80),
+  reading = c(82, 88, 90, 93, 85, 87, 75, 83)
+)
+
 student_wide <- dcast(student_long, student ~ year, value.var = c("math", "reading"))
 student_wide
 ```
 
 <br>
 
-**Tips**
-- Before coding a reshape, first visualize the format you want the data to take.
-- I often sketch a small example table.
+**Tips**  
+
+- Before coding a reshape, first visualize the format you want the data to take.  
+
+- I often sketch a small example table.  
   - This helps me to understand what variables I need to use as `LHS`, `RHS`, and `value.var`.
 
 

@@ -8,6 +8,7 @@
   - Introduction to R Statistical Analysis Software: Summer 2025
     - [Lecture 0](Lec0.html)
     - [Lecture 1](Lec1.html)
+    - [Lecture 2](Lec2.html)
     
 
 

@@ -735,9 +735,7 @@ Hint:
 + use `+` to add this layer to the plot.
 
 ```{webr-r}
-ggplot(data = airquality) +
-  geom_point(aes(x = Temp, y = Wind)) + 
-  labs(x = "Maximum temperature (degrees F)", y = "Wind Speed (mph)") 
+
 
 ```
 :::
@@ -892,9 +890,7 @@ ggplot(data = airquality) +
 ### Answers
 
 ```{webr-r}
-# Your code here
-ggplot(data = airquality) +
-  geom_density(aes(x = Ozone), fill = "blue", alpha = 0.5)
+
 ```
 
 :::
@@ -944,8 +940,6 @@ ggplot(data = airquality) +
 ### Answers
 
 ```{webr-r}
-ggplot(data = airquality) +
-  geom_boxplot(aes(x = factor(Month), y = Temp), fill = "green", alpha = 0.5)
 
 ```
 
@@ -1006,10 +1000,7 @@ ggplot(data = airquality) +
 **NOTE:** Remember that we need to tell R to use `Month` as a categorical variable.
 
 ```{webr-r}
-ggplot(data = airquality) +
-  geom_point(
-    aes(x = Temp, y = Ozone, color = factor(Month), shape = factor(Month))
-  )
+
 
 ```
 

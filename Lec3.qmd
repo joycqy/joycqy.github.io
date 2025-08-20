@@ -1,0 +1,2173 @@
+---
+title: "Day 3: Data visualization with ggplot2 package"
+author: "Qingyin Cai"
+institute: |
+  Department of Applied Economics<br>University of Minnesota
+format: 
+  revealjs:
+    self-contained: false
+    slide-number: c/t
+    width: 1600
+    height: 900
+    theme: default 
+    scss: ../slide_style/styles.scss
+    fontsize: 1.8em
+    callout-icon: false
+    scrollable: true
+    echo: true
+    cache: true
+    warning: false
+    multiplex: false
+    code-link: true
+    title-slide-attributes:
+      data-background-color: "#e6e6fa"
+    fig-dpi: 400
+    chalkboard: true
+    preview-links: true
+filters:
+  - webr
+  - fontawesome
+webr:
+  packages: ["data.table", "ggplot2", "dplyr", "gapminder"]
+  cell-options:
+    editor-font-scale: 0.8
+---
+
+
+## {.center}
+
+### {{< fa bullseye >}} Learning Objectives
+
++ Learn the basic operations of `ggplot2` package to create figures. 
++ You will be able to create:
+  + scatter plot
+  + line plot
+  + bar plot
+  + histogram
+  + box plot
+  + density plot
+  + facet plot
+
+<br>
+
+### {{< fa asterisk >}} Reference {.center}
++ [ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org/)
++ [R for Data Science (2e), Ch1: Data Visualization](https://r4ds.had.co.nz/pipes.html)
+
+
+## {{< fa list >}} Today's Outline:
+1. [Taste of ggplot2 package](#taste-of-ggplot2-package)
+
+2. [Introduction to ggplot 2](#intro) 
+   + [Anatomy of ggplot2](#anatomy-of-ggplot2)
+   + [Scatter Plot](#scatter-plot)
+   + [Different Types of Plot](#different-types-of-plot)
+   + [Modify Aesthetic Attributes](#modify-aesthetic-attributes)
+   + [Group Aesthetic](#group-aesthetic)
+   + [Collective geoms](#collective-geoms)
+   + [Modify Axis, Labels, and Titles](#modify-axis-labels-and-titles)
+
+3. [Advanced Topics](#advanced-topics)
+   + [Facet Plot](#facet-plot)
+   + [Multiple Datasets in One Figure](#multiple-datasets-in-one-figure)
+   + [ggplot2 Themes](#themes)
+   + [theme() Function](#theme-function)
+   + [Save the Plot](#save-the-plot)
+   
+
+## Taste of ggplot2 package {#taste-of-ggplot2-package}
+
+By the end of the lecture, you will be able to create the figures like the following examples using `ggplot2` package.
+
+::: {.panel-tabset}
+
+### Example 1
+
+```{r}
+#| label: demo1
+#| autorun: true
+#| echo: false
+
+# /*===== Load package =====*/
+library(ggplot2)
+library(tidyverse)
+library(data.table)
+
+#/*--------------------------------*/
+#' ## Scatter plot
+#/*--------------------------------*/
+ggplot(data = airquality, aes(x = Ozone, y = Temp)) +
+  geom_point() +
+  labs(title = "Ozone (ppb) and temperature (degrees F) in New York, May to September 1973.") +
+  geom_smooth(method = "lm") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+### Example 2
+
+```{r}
+#| label: demo2
+#| autorun: true
+#| echo: false
+
+#/*--------------------------------*/
+#' ## Box plot
+#/*--------------------------------*/
+PlantGrowth %>%
+  as.data.table() %>%
+  .[, group := fcase(
+    group == "ctrl", "Control",
+    group == "trt1", "Treatment 1",
+    group == "trt2", "Treatment 2"
+  )] %>%
+  ggplot(data = ., aes(x = group, y = weight)) +
+  geom_boxplot(fill = "blue", alpha =0.5) +
+  labs(
+    title = "Box plot of weight of plants by group",
+    x = "Group",
+    y = "Weight"
+  ) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+
+# ggplot(data = airquality, aes(x = factor(Month), y = Temp)) +
+#   geom_boxplot() +
+#   theme_bw() +
+#   labs(
+#     title = "Box plot of temperature (degrees F) in New York, May to September 1973",
+#     x = "Month",
+#     y = "Temperature"
+#   ) +
+#   theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Example 3
+
+```{r}
+#| label: demo3
+#| autorun: true
+#| echo: false
+
+#/*--------------------------------*/
+#' ## Density plot
+#/*--------------------------------*/
+data(gapminder, package="gapminder")
+
+ggplot(data=gapminder, aes(x=lifeExp, fill=continent)) +
+    geom_density(alpha=0.5) +
+    labs(
+      title = "Density plot of life expectancy by continent",
+      x = "Life expectancy",
+      y = "Density"
+    ) +
+    theme_bw() +
+    theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Example 4
+
+```{r}
+#| label: demo4
+#| autorun: true
+#| echo: false
+
+gapminder %>%
+  filter(country %in% c("United States", "China", "India", "United Kingdom")) %>%
+  ggplot(aes(x = year, y = lifeExp, color = country))+
+  geom_line()+
+  labs(
+    title = "Life Expectancy in Selected Countries",
+    x = "Year", y = "Life Expectancy"
+  )+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+### Example 5
+```{r}
+#| label: demo5
+#| autorun: true
+#| echo: false
+
+airquality %>%
+  as.data.table() %>%
+  melt(
+    data = .,
+    id.vars = c("Month", "Day", "Ozone")
+  ) %>%
+  ggplot(., aes(x = value, y = Ozone))+
+  geom_point()+
+  facet_wrap(~variable, scales = "free", ncol = 2)+
+  geom_smooth() + 
+  labs(
+    title = "Relationship between ozone and weather conditions in New York, May to September 1973",
+    x = "", y = "Ozone"
+  ) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_bw()
+```
+
+:::
+
+## {.center}
+
+- There are many functions in the `ggplot2` package to create figures, and today's lecture is not a comprehensive guide to all of them. 
+
+- We will focus on the basic functions to create the most common types of figures.
+
+
+## Before Starting {.center}
+
+Install the package `ggplot2` and `gapminder` locally if you haven't already done so.
+```{r}
+#| eval: false
+install.packages('ggplot2')
+install.packages('gapminder')
+```
+
+Once you have the package in R, let's load it.
+
+```{webr-r}
+library(ggplot2)
+library(gapminder)
+```
+
+<br>
+
+**Note**  
+
++ There is a package called `tidyverse`, which is  a collection of R packages designed for data science.  
+
++ When you load the `tidyverse` package, the `ggplot2` package is automatically loaded.
+
+
+
+##  Introduction to `ggplot2` {#intro}
+
+
+:::{.panel-tabset}
+<!-- start .panel-tabset -->
+
+### What is it?
+
++ As you know, there are already base (built-in) R functions to create figures (e.g., `plot()` and `hist()`)
+  + pros: they are fast (especially for plotting a large dataset).
+  + cons: The plots are difficult to customize.
+
+<br>
+
++ The `ggplot2` package provides more flexibility and customization options for creating figures with consistent syntax.
+  + Check [this](https://r-graph-gallery.com/) out to see what kind of figures `ggplot2` can make.
++ Variety of extensional packages built on top of `ggplot2` (e.g., `ggthemes`, `ggpubr`, `ggrepel`, `gganimate`, etc.) allows you to create more complex figures.
+  + See [this](https://exts.ggplot2.tidyverse.org/gallery/) for examples.  
+
+
+### How does it work?
+
++ `ggplot2` views a figure as the collection of multiple independent layers.
+  + layers for geometric objects (e.g., points, lines, bars), layers for aesthetic attributes of the geometric objects (color, shape, size), layers of annotations and statistical summaries, ... etc.
+
++ Then, it combines these layers to create a single figure as a final output.
+
+
+<!-- end .panel-tabset -->
+:::
+
+
+## Anatomy of ggplot2 {#anatomy-of-ggplot2}
+<!-- You can alternatively use "Code Animations"(https://quarto.org/docs/presentations/revealjs/advanced.html#code-animations) -->
+
+- Use the right-arrow (or down-arrow) key to move through the steps. The left column shows the code. The right column shows the plot it produces. Watch how the plot changes each time a new line of code is added.
+
+::: {.r-stack}
+<!-- start r-stack -->
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "1,2"
+
+# Create a canvas for the plot
+ggplot(data = airquality) 
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "3,4"
+#| 
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind)
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "5,6"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis 
+  aes(y = Ozone) 
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "7,8"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) + 
+  # Add y-axis
+  aes(y = Ozone) +
+  # Add a scatter plot
+  geom_point() 
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "9,10"
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") 
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "11,12"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") +
+  # Change x-axis label
+  labs(x = "Wind Speed (mph)")
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "13,14"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") +
+  # Change x-axis label
+  labs(x = "Wind Speed (mph)") +
+  # Change y-axis label
+  labs(y = "Ozone (ppb)") 
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "15,16,17,18,19"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") +
+  # Change x-axis label
+  labs(x = "Wind Speed (mph)") +
+  # Change y-axis label
+  labs(y = "Ozone (ppb)") +
+  # Add title and subtitle
+  labs(
+    title = "Relationship between ozone and wind speed in New York",
+    subtitle = "May to September 1973"
+  )
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "20,21"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") +
+  # Change x-axis label
+  labs(x = "Wind Speed (mph)") +
+  # Change y-axis label
+  labs(y = "Ozone (ppb)") +
+  # Add title and subtitle
+  labs(
+    title = "Relationship between ozone and wind speed in New York",
+    subtitle = "May to September 1973"
+  ) +
+  # Add caption
+  labs(caption = "Data source:")
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "22,23"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") +
+  # Change x-axis label
+  labs(x = "Wind Speed (mph)") +
+  # Change y-axis label
+  labs(y = "Ozone (ppb)") +
+  # Add title and subtitle
+  labs(
+    title = "Relationship between ozone and wind speed in New York",
+    subtitle = "May to September 1973"
+  ) +
+  # Add caption
+  labs(caption = "Data source:") +
+  # Set the theme
+  theme_bw() 
+```
+:::
+
+::: {.fragment}
+```{r}
+#| autorun: true
+#| warning: false
+#| output-location: column
+#| fig-width: 6
+#| fig-height: 4
+#| code-line-numbers: "24,25,26,27,28"
+
+# Create a canvas for the plot
+ggplot(data = airquality) + 
+  # Add x-axis
+  aes(x = Wind) +
+  # Add y-axis
+  aes(y = Ozone) + 
+  # Add a scatter plot
+  geom_point() +
+  # Add a regression line
+  geom_smooth(method = "lm") +
+  # Change x-axis label
+  labs(x = "Wind Speed (mph)") +
+  # Change y-axis label
+  labs(y = "Ozone (ppb)") +
+  # Add title and subtitle
+  labs(
+    title = "Relationship between ozone and wind speed in New York",
+    subtitle = "May to September 1973"
+  ) +
+  # Add caption
+  labs(caption = "Data source:") +
+  # Set the theme
+  theme_bw() +
+  # Center the title and subtitle position
+  theme(
+    plot.title = element_text(hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5)
+  )
+```
+:::
+
+<!-- end r-stack -->
+:::
+<br>
+
+:::{.fragment .fade-up}
++ Note: This code is for demonstration purposes. Don't imitate this code!
+:::
+
+
+## Anatomy of ggplot2 (continued)
+
++ Every ggplot2 plot has three key components:  
+  + Data  
+  + A set of aesthetic mappings between variables in the data and visual properties.
+  + At least one layer which describes how to render each observation. Layers are usually created with a `geom` function.
+
+<br>
+
+The very general syntax for creating a plot with `ggplot2` is as follows:
+
+```{r}
+#| eval: false
+ggplot(data = ...) +
+  geom_*(aes( ... ))
+```
+
+<br>
+
++ `aes` stands for aesthetic mappings. It tells `ggplot2` how to map variables in the data to visual properties of the plot (e.g., x-axis, y-axis, color, shape, size, etc.)
++ `+` operator tells R that you're adding another layer (e.g., line plot) to the current "canvas".
++ Depending on the type of the figure you want to plot, use different `geom_*()` functions.
+  + Eg. `geom_point()` for scatter plot, `geom_line()` for line plot, etc.
+
+
+## Example
+
+::: {.panel-tabset}
+<!-- start .panel-tabset 2 -->
+
+### Data
+
+Let's use the `airquality` data for this example.
+
++ `airquality` data is a built-in dataset in R. So, you don't need to load it. 
++ Type `airquality` in the console to see the data. (Type `?airquality` in the console for more information.)
+
+```{webr-r}
+?airquality
+
+# Take a look at the first few rows of the data
+head(airquality)
+```
+
+### Let's Create a Scatter Plot {#scatter-plot}
+
+We will create a scatter plot of `Ozone` (ozone level in the air) and `Temp` (Maximum daily temperature in degrees $F$) from the `airquality` data. 
+
+The final plot should look like the following:
+
+```{r}
+#| autorun: true
+#| echo: false
+#| fig-dpi: 100
+#| fig-width: 7
+#| fig-height: 6
+#| fig-align: center
+
+ggplot(airquality)+
+  geom_point(aes(x = Temp, y = Ozone))
+```
+
+### Step 1
+
+[**Step 1: Start with `ggplot()`**]{style="color: blue;"}
+
++ `ggplot(data = dataset)` initializes a ggplot object. In other words, it prepares a "canvas" for the plot.
++ Here, let R know the dataset you are trying to visualize.
+
+::: {.panel-tabset}
+### Try it!
+Run the following code. Can you see any output?
+```{webr-r}
+ggplot(data = airquality)
+```
+
+### Why?
+
++ This code does not produce any output because we haven't told R what to plot with the data yet. 
++ `ggplot()` just prepares a blank "canvas" for you!
+
+```{webr-r}
+ggplot(data = airquality)
+```
+:::
+
+
+### Step 2
+
+[**Step 2: Draw figures with `geom_*()` functions, and add to the current canvas use `+` operator**]{style="color: blue;"}
+
++ For example, we use `geom_point()` to create a scatter plot.  
+  + use `aes()` to specify which variable you want to use for x and y axis.  
+
++ `aes()` is used to tell R to look for the variables inside the dataset you specified in `ggplot()`, and use the information as specified.  
+
++ e.g., `aes(x = Temp, y = Ozone)` tells R to look for  `Temp` and `Ozone` in the data, and to map the data to x-axis and y-axis, respectively.  
+
+<br>
+
+```{webr-r}
+# You might see a warning message. Don't worry about it!
+ggplot(data = airquality) +
+  geom_point(aes(x = Temp, y = Ozone))
+```
+<!-- end .panel-tabset 2 -->
+:::
+
+
+## Summary {.center}
+
+These are basic steps to create a figure with `ggplot2` package.  
+
++ Step1: Start with `ggplot()`
+  + This function prepares a "canvas" for the figure.
++ Step2: Draw a figure with `geom_*()` function, and add to the current canvas with `+` operator. 
++ Step3: Repeat Step2 and Step3 to add whatever layers you want to add.
++ Step4 (optional): Add labels, titles, and other annotations to the plot with `labs()`, `theme()`, etc.
+
+
+::: {.fragment .fade-up}
++ Don't forget to specify x and y variables in the `aes()` function.
+  + Also, some `geom_*()` functions only require `x` variable (e.g., `geom_histogram()`).
++ In step 3, layers can be added in any order, but the order of the layers affects the final appearance of the plot.  
++ When you want to make a simple x and y plot, the base R functions are sufficient (e.g., `with(data, plot(column_x, column_y)`)
+
+:::
+
+
+<br>
+
+## In-class exercise {#exercise-problems1}
+
+::: {.panel-tabset}
+
+### Questions 
+
+1. Create a scatter plot of `Temp` and `Wind` from the `airquality` data.
+
+2. In the plot you just created, let's change the x-axis label to "Maximum temperature (degrees F)" and the y-axis label to "Wind Speed (mph)". For this, use `labs()` function.
+
+Hint: 
+
++ `labs(x = new_x_label, y = new_y_label)`
++ use `+` to add this layer to the plot.
+
+
+```{webr-r}
+# Your code here
+
+```
+
+### Answers
+
+1. Create a scatter plot of `Temp` and `Wind` from the `airquality` data.
+
+2. In the plot you just created, let's change the x-axis label to "Maximum temperature (degrees F)" and the y-axis label to "Wind Speed (mph)". For this, use `labs()` function.
+
+Hint: 
+
++ `labs(x = new_x_label, y = new_y_label)`
++ use `+` to add this layer to the plot.
+
+```{webr-r}
+ggplot(data = airquality) +
+  geom_point(aes(x = Temp, y = Wind)) + 
+  labs(x = "Maximum temperature (degrees F)", y = "Wind Speed (mph)") 
+
+```
+:::
+
+
+
+## Different Types of Plot {#different-types-of-plot}
+
++ You can create various plots with the ggplot2 package by choosing the appropriate `geom_*()` function for the desired plot type.
+  
++ Here are some of the most commonly used `geom_*()` functions.  
+  + `geom_point()`: scatter plot 
+  + `geom_line()`: line plot
+  + `geom_bar()`: bar plot
+  + `geom_boxplot()`: box plot
+  + `geom_histogram()`: histogram
+  + `geom_density()`: density plot
+     + This computes and draws kernel density estimates, and is a smoothed version of the histogram.
+  + `geom_smooth()`: draws an OLS-estimated regression line (other regression methods available)
+<br>
+
++ see [this](https://ggplot2.tidyverse.org/reference/#geoms) for full list of `geom_*()`
+
+
+## Modify Aesthetic Attributes {#modify-aesthetic-attributes}
+
+<!-- start panel-tabset: Modify Aesthetic Attributes -->
+::: {.panel-tabset}
+
+### Basics
+
+We can modify how plots look by specifying color, shape, and size.
+
+Here are list of options to control the aesthetics of figures. You use these options inside the `geom_*()`.
+
++ `size`: control the size of points and text
+  + e.g., `geom_point(size = 3)`
+
++ `color`: control color of the points and lines
+  + e.g.,` geom_point(color = "blue")`
+
++ `fill`: control the color of the inside areas of figures like bars and boxes 
+  + e.g., `geom_density(fill = "blue")` fills the area under the density curve with blue color
+
++ `alpha` controls the transparency of the fill color
+  + e.g., `alpha=1` is opaque, `alpha=0` is completely transparent, usually between 0 and 1
+
++ `shape`: controls the symbols of point, it takes integer values between 0 and 25 
+  + e.g., `geom_point(shape = 1)` for circle, `geom_point(shape = 2)` for triangle
+
+<br>
+
++ For point shapes available in R, see [this](https://ggplot2.tidyverse.org/articles/ggplot2-specs.html#sec:shape-spec).  
++ For further information about the options for aesthetics, see [this](https://ggplot2.tidyverse.org/reference/#aesthetics).  
+
+
+
+### Examples
+
+<!-- start .panel-tabset: Modify Aesthetic Attribute - Examples -->
+::: {.panel-tabset}
+### Scatter Plot
+
++ `size = 3`: makes the points larger.
++ `color = "red"`: changes the color of the points to red.
++ `shape = 1`: changes the shape of the points to circle. 
+
+
+```{webr-r}
+#| autorun: true
+#| warning: false
+
+ggplot(data = airquality) +
+  geom_point(aes(x = Temp, y = Ozone), size = 3, color = "red ", shape = 1)
+```
+
+### Histogram
+
+
++ `fill = "blue"`: fills the bars with blue color.
++ `alpha = 0.5`: makes the fill color semi-transparent.
+  + Try changing the value of `alpha` to see how the transparency changes.
+
+```{webr-r}
+#| autorun: true
+ggplot(data = airquality) +
+  geom_histogram(aes(x = Temp), fill = "blue", alpha = 0.5)
+
+# option 1: Set number of bins
+# geom_histogram(aes(x = Temp), bins = 20, fill = "blue", alpha = 0.5)
+
+# option 2: Set bin width
+# geom_histogram(aes(x = Temp), binwidth = 2, fill = "blue", alpha = 0.5)
+# (binwidth = 2 means each bar covers 2 units of temperature.)
+
+```
+
+### Line Plot
+
++ `linewidth = 1.5`: makes the line thicker.
++ `color = "purple"`: changes the color of the line to purple.
++ `linetype = "dotted"`: changes the line type to dotted.
+
+```{webr-r}
+#| autorun: true
+
+ggplot(
+  data = as.data.table(airquality)[, .(mean_ozone = mean(Ozone, na.rm = TRUE)), by = Month]
+) +
+  geom_line(
+    aes(x = Month, y = mean_ozone),
+    linewidth = 1.5,
+    color = "purple",
+    linetype = "dotted"
+  )
+```
+<!-- end .panel-tabset: Modify Aesthetic Attributes - Examples -->
+:::
+
+<!-- end .panel-tabset: Modify Aesthetic Attributes -->
+:::
+
+## In-class Exercise {#exercise-problems2}
+<!-- start panel-tabset: Exercise Problem -->
+::: {.panel-tabset}
+
+### Exercise 1
+
+::: {.panel-tabset}
+
+### Questions
+Create a density plot of `Ozone` from the `airquality` data. Fill the area under the density curve with blue and make it semi-transparent (use `alpha = 0.5`).
+
+The figure should look like the following:
+```{r}
+#| autorun: true
+#| echo: false
+#| fig-dpi: 100
+#| fig-width: 7
+#| fig-height: 6
+#| fig-align: center
+
+ggplot(data = airquality) +
+  geom_density(aes(x = Ozone), fill = "blue", alpha = 0.5)
+```
+
+```{webr-r}
+# Your code here
+
+```
+
+### Answers
+
+```{webr-r}
+# Your code here
+ggplot(data = airquality) +
+  geom_density(aes(x = Ozone), fill = "blue", alpha = 0.5)
+```
+
+:::
+
+### Exercise 2
+
+::: {.panel-tabset}
+
+### Questions
+
+::: {.columns}
+
+::: {.column width="50%"}
+Create box plots of monthly `Temp` from the `airquality` data. Fill the boxes with green and make it semi-transparent (use `alpha = 0.5`).
+
+The figure should look like the following:
+
+<br>
+
+**Hint**
+
++ This is a bit of a tricky problem, but very useful!
++ We want to use `Month` as a categorical variable for the x-axis, but `Month` is a numeric variable in the data. How can we tell R to use it as a categorical (factor) variable?
+  + Apply `factor()` function to a `Month` to convert it to a factor variable in `aes()` in the `geom_*()` function.
+:::
+
+::: {.column width="50%"}
+```{r}
+#| autorun: true
+#| echo: false
+#| fig-dpi: 100
+#| fig-width: 7
+#| fig-height: 6
+
+ggplot(data = airquality) +
+  geom_boxplot(aes(x = factor(Month), y = Temp), fill = "green", alpha = 0.5)
+```
+:::
+
+:::
+
+```{webr-r}
+# Your code here
+
+```
+
+### Answers
+
+```{webr-r}
+ggplot(data = airquality) +
+  geom_boxplot(aes(x = factor(Month), y = Temp), fill = "green", alpha = 0.5)
+
+```
+
+:::
+<!-- end panel-tabset: Exercise Problem -->
+:::
+
+
+## Group Aesthetic {#group-aesthetic}
+
+<!-- start panel-tabset: Group aesthetic -->
+::: {.panel-tabset}
+
+### Basics
+
+So far, we specified aesthetic attributes outside of the `aes()` function. Consequently, all the geometric objects in the plot have the same color, shape, and size, etc.
+
++ e.g., `geom_point(aes(x = var_x, y = var_y), color = "red")`.
+
+If you use those options [inside]{style="color:red;"} the `aes()` function like `aes(color = var_z)`, R will display different colors by group based on the value of `var_z`. Usually `var_z` is a categorical variable.
+
++ e.g., `geom_point(aes(x = var_x, y = var_y, color = var_z))` displays a scatter plot where the points are colored differently based on the value of `var_z`.
+
+**Example**
+
+Let's create density plots of `Temp` for each month, and use different colors (`fill` in this case) for different `Month`.
+
+```{webr-r}
+#| autorun: false
+
+# Now, fill color depends on factor(Month)
+ggplot(data = airquality) +
+  geom_density(aes(x = Temp, fill = factor(Month)), alpha = 0.5)
+```
+
+
+### In-class Exercise
+
+::: {.panel-tabset}
+
+### Questions
+
+1. Create a scatter plot of `Ozone` and `Temp` in the `airquality` data. Let's use different colors for different `Month`.
+2. In addition to the previous plot, let's use different shapes for different `Month`.
+
+**NOTE:** Remember that we need to tell R to use `Month` as a categorical variable.
+
+
+```{webr-r}
+# Your code here
+
+```
+
+### Answers
+1. Create a scatter plot of `Ozone` and `Temp` in the `airquality` data. Let's use different colors for different `Month`.
+2. In addition to the previous plot, let's use different shapes for different `Month`.
+
+**NOTE:** Remember that we need to tell R to use `Month` as a categorical variable.
+
+```{webr-r}
+ggplot(data = airquality) +
+  geom_point(
+    aes(x = Temp, y = Ozone, color = factor(Month), shape = factor(Month))
+  )
+
+```
+
+:::
+
+
+<!-- end panel-tabset: Group aesthetic -->
+:::
+
+
+## Collective geoms {#collective-geoms}
+
+
+<!-- start panel-tabset: Collective geoms -->
+::: {.panel-tabset}
+
+### Basics
+
+So far, we used only one `geom_*()` function in a plot. But you can use multiple `geom_*()` functions in a single plot.
+
++ This just overlays multiple layers of different geometric objects on the same "canvas".
++ Use `+` operator to add multiple `geom_*()` functions to the plot.
+
+
+**Example Syntax**
+
+```{r}
+#| eval: false
+ggplot(data = dataset) +
+  geom_*(aes(x = column_x, y = column_y, fill = column_z)) +
+  geom_*(aes(x = column_x, y = column_y)) +
+  geom_*(aes(x = column_x, y = column_y)) +
+  ...
+```
+
+If an additional layer has the same `aes()` mapping, you can specify it only once in the `ggplot()`.
+
+```{r}
+#| eval: false
+# The above code is equivalent to the following code
+ggplot(data = dataset, aes(x = column_x, y = column_y) +
+  geom_*(fill = column_z)) +
+  geom_*() +
+  geom_*() +
+  ...
+```
+
+**Note**  
+
++ Recall that `ggplot()` prepares a plot object.
++ If you tell `ggplot()` to use `aes()` mapping from the beginning, you don't need to specify it again in the `geom_*()` functions.
+
+
+### Example
+
++ Let's create a scatter plot of `Ozone` and `Temp` from the `airquality` data.
++ In addition to the scatter plot, let's add a simple regression line to the plot using `geom_smooth()` function.
+
+```{webr-r}
+#| autorun: true
+#| warning: false
+
+ggplot(data = airquality, aes(x = Temp, y = Ozone)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ x)
+
+# The above code is equivalent to the following code
+# ggplot(data = airquality) +
+#   geom_point(aes(x = Temp, y = Ozone)) +
+#   geom_smooth(aes(x = Temp, y = Ozone), method = "lm")
+```
+
+<!-- end panel-tabset: Collective geoms -->
+:::
+
+## Modify Axis, Legend, and Plot Labels {#modify-axis-legend-plot-labels}
+
+<!-- start panel-tabset: Modify axis, legend, and plot labels -->
+::: {.panel-tabset}
+### Basics
+
++ By default, x-axis, y-axis, and legend labels are the column names of the data, which are not always informative. Also, you might want to add a title and subtitle to the plot.
+
++ You can modify the labels, titles, and other annotations of the plot using `labs()` function.
+
+
+**Example Syntax**
+
+```{r}
+#| eval: false
+
+ggplot(data = dataset) +
+  geom_*(aes(x = column_x, y = column_y)) +
+  labs(
+    x = "X-axis label",
+    y = "Y-axis label",
+    title = "Title of the plot",
+    subtitle = "Subtitle of the plot",
+    caption = "Data source"
+  )
+```
+
+
+### Examples
+
+<!-- start panel-tabset: Examples -->
+::: {.panel-tabset}
+
+### Example 1
+
+```{webr-r}
+#| autorun: true
+#| warning: false
+ggplot(data = airquality) +
+  geom_point(aes(x = Temp, y = Ozone, color = factor(Month))) +
+  labs(
+    x = "Maximum temperature (degrees F)",
+    y = "Ozone level (ppb)",
+    title = "Relationship between ozone and temperature",
+    color = "Month",
+    subtitle = "May to September 1973, New York"
+  )
+```
+
+### Example 2
+
+```{webr-r}
+#| autorun: true
+#| warning: false
+#| 
+ggplot(data = airquality) +
+  geom_density(aes(x = Ozone, fill = factor(Month)), alpha = 0.5) +
+  labs(
+    x = "Maximum temperature (degrees F)",
+    y = "Ozone level (ppb)",
+    title = "Distribution of observed ozone by month",
+    fill = "Month",
+    subtitle = "May to September 1973, New York"
+  )
+```
+
+<!-- start panel-tabset: Examples -->
+:::
+
+**Note**  
++ If you use `color` (`fill`) for group aesthetic, you need to use `color` (`fill`) in the `labs()` function to change the legend title.
+
+<!-- end panel-tabset: Modify axis, legend, and plot labels -->
+:::
+
+
+
+## Summary {.center} 
+
+<br>
+
+Let's summarize what we have learned so far.
+<br>
+
++ the basic syntax of the `ggplot2` package.
++ how to create a popular types of plots (scatter plot, line plot, bar plot, histogram, box plot, density plot).
++ how to modify aesthetic attributes of the plot (color, shape, size, etc.)
++ how to use group aesthetic to group the data by a variable
++ how to use multiple `geom_*()` functions in a single plot.
++ how to  modify axis, legend, and plot labels with `labs()` function.
+
+
+## Exercise Problems
+
+<!-- start panel-tabset: Exercise Problems -->
+::: {.panel-tabset}
+### Exercise Problems 1
+
+<!-- start panel-tabset Exercise Problems -->
+:::{.panel-tabset}
+
+### Data
+
+Let's use the `economics` data, which is a dataset built into the `ggplot2` package. It was produced from US economic time series data available from Federal Reserve Economic Data. This contains the following variables:
+
++ `date`: date in year-month format 
++ `pce`: personal consumption expenditures, in billions of dollars
++ `pop`: total population in thousands
++ `psavert`: personal savings rate
++ `uempmed`: median duration of unemployment in weeks
++ `unemploy`: number of unemployed in thousands
+
+### Instructions
+
+**1.** Create a scatter plot of `unemploy` (x-axis) and `psavert` (y-axis). Add a simple regression line to the plot. Change the x-axis, y-axis, and fill legend labels to something more informative.
+
+**2.** Create a bar plot of `psavert` by date. Use `pop` for fill color. Change the x-axis, y-axis, and fill legend labels to something more informative.
+
++ *Hint*: use `stat = 'identity'` in the `geom_bar()` function to plot the actual values of `pce`. 
+
+**3.** (Challenging) Create a multiple line plot taking `day` as x-axis and `psavert` and `uempmed` as y-axis, respectively. The output should look like the following.
+
++ *Hint*: I think there are multiple ways to do this. 
+
+```{r}
+#| autorun: true
+#| echo: false
+#| warning: false
+#| fig-dpi: 100
+#| fig-width: 9
+#| fig-height: 7
+#| fig-align: center
+economics_long <-
+  as.data.table(economics) %>%
+  melt(
+    id.vars = "date",
+    measure.vars = c("psavert", "uempmed")
+  ) %>%
+  .[, new_names := ifelse(variable == "psavert", "Personal Savings Rate", "Median Duration of Unemployment")]
+
+ggplot(economics_long) +
+  geom_line(
+    aes(x = date, y = value, color = new_names)
+  )+
+  labs(
+    x = "Date",
+    y = "Value",
+    color = "Variable"
+  )
+```
+
+### Solutions
+
+```{webr-r}
+#| output-location: column
+# === Part 1 === #
+ggplot(data = economics, aes(x = unemploy, y = psavert)) +
+  geom_point()+
+  geom_smooth(method = "lm", formula = y ~ x) +
+  labs(
+    x = "Unemployment (thousands)",
+    y = "Personal savings rate",
+    title = "Relationship between unemployment and personal savings rate"
+  )
+
+# === Part 2 === #
+ggplot(data = economics) +
+  geom_bar(aes(x = date, y = psavert, fill = pop), stat = 'identity') +
+  labs(
+    x = "Date",
+    y = "Personal Savings Rate",
+    fill = 'Population',
+    title = "Personal Consumption Expenditures by Date"
+  )
+
+# === Part 3 === #
+ggplot(data = economics) +
+  geom_line(aes(x = date, y = psavert, color = "Personal Savings Rate")) +
+  geom_line(aes(x = date, y = uempmed, color = "Median Duration of Unemployment"))
+
+# In the code above, I used two geom_line() functions to create two lines in the same plot. Although there is no color called "Personal Savings Rate", if you use `color=<color_name>` option inside the `aes()` function, ggplot regards <color_name> as a variable and assigns color automatically. Also, it will be shown in the legend.
+
+
+# Alternative solution (This is more efficient if you have many variables to plot).
+economics_long <-
+  as.data.table(economics) %>%
+  melt(
+    id.vars = "date",
+    measure.vars = c("psavert", "uempmed")
+  ) %>%
+  .[, new_names := ifelse(variable == "psavert", "Personal Savings Rate", "Median Duration of Unemployment")]
+
+ggplot(economics_long) +
+  geom_line(
+    aes(x = date, y = value, color = new_names)
+  )+
+  labs(
+    x = "Date",
+    y = "Value",
+    color = "Variable"
+  )
+```
+<!-- start panel-tabset: Exercise Problems 1 -->
+:::
+
+
+### Exercise Problems 2 {.scrollable}
+
+<!-- start panel-tabset: Exercise Problems 2 -->
+:::{.panel-tabset}
+
+### Data
+
+For this exercise problem, we will use [medical cost personal datasets](https://github.com/stedy/Machine-Learning-with-R-datasets/blob/master/insurance.csv) descried in the book "Machine Learning with R" by Brett Lantz. The dataset provides $1,338$ records of medical information and costs billed by health insurance companies in 2013, compiled by the United States Census Bureau.
+
+The dataset contains the following variables:
+
++ `age`: age of primary beneficiary
++ `sex`: insurance contractor gender, female, male
++ `bmi`: body mass index, providing an understanding of body, weights that are relatively high or low relative to height
++ `children`: number of children covered by health insurance
++ `smoker`: smoking
++ `region`: the beneficiary's residential area in the US; northeast, southeast, southwest, northwest.
++ `charges`: individual medical costs billed by health insurance
+
+
+**Download the data**
+
+```{webr-r}
+#| autorun: true
+
+# === Download Data (Don't worry about this part.) === #
+insurance_url <- "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/insurance.csv"
+insurance <- fread(insurance_url) #You can use import() function of the rio package!
+
+# fread() is a function from the data.table package used for fast and efficient reading of data from text files, particularly large CSV files.
+
+# Of course, you can also use the import function from the rio package (this only works in RStudio, not here). For example, run
+# insurance <- rio::import(insurance_url)
+
+# === Take a look at the data === #
+head(insurance)
+```
+
+
+### Instructions 
+
+1. Create a histogram of `charges` by `sex` in the same plot. Fill the boxes with different colors for each `sex`.
+
+2. Create a scatter plot of `bmi` (x-axis) and `charges` (y-axis).
+
+3. Now, create a scatter plot of `bmi` (x-axis) and `charges` (y-axis), and add regression lines by `smoke` (So, there are two regression lines: one for group of smokers and the other for group of non-smokers). 
+
+4. Create the following plot.
+
+```{r}
+#| autorun: true
+#| echo: false
+#| fig-dpi: 100
+#| fig-width: 7
+#| fig-height: 6
+insurance_url <- "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/insurance.csv"
+insurance <- fread(insurance_url)
+
+ggplot(data = insurance) +
+  geom_boxplot(aes(x = sex, y = charges, fill = region)) +
+  labs(
+    x = "Sex",
+    y = "Medical costs",
+    title = "Distribution of individual medical mosts by sex and region"
+  )
+```
+
+### Solutions
+
+```{webr-r}
+#| autorun: false
+
+# === Part 1 === #
+ggplot(data = insurance) +
+  geom_histogram(aes(x = charges, fill = sex), alpha = 0.5) +
+  labs(
+    x = "Medical Charges",
+    y = "Frequency",
+    title = "Histogram of individual medical costs by sex"
+  )
+
+
+# === Part 2 === #
+ggplot(data = insurance) +
+  geom_point(aes(x = bmi, y = charges)) +
+  labs(
+    x = "Body Mass Index (BMI)",
+    y = "Scatter plot of BMI vs medical costs"
+  )
+
+# === Part 3 === #
+ggplot(data = insurance, aes(x = bmi, y = charges, color = smoker)) +
+  geom_point()+
+  geom_smooth(method = "lm", formula = y ~ x) +
+  labs(
+    x = "Body Mass Index (BMI)",
+    y = "Scatter plot of BMI vs medical costs by smoker Status",
+    color = "Smoker"
+  )
+
+# === Part 4 === #
+ggplot(data = insurance) +
+  geom_boxplot(aes(x = sex, y = charges, fill = region)) +
+  labs(
+    x = "Sex",
+    y = "Medical costs",
+    title = "Distribution of individual medical mosts by sex and region"
+  )
+```
+<!-- end panel-tabset: Exercise Problems 2 -->
+:::
+
+:::
+
+# Section 2: Advanced Topics {#advanced-topics}
+
+---
+
+## Before We Start {.center}
+
+For this section, we will continue to use the `economics` and `insurance` data we used in the previous exercise problems.
+
+
+## Facet Plot {#facet-plot}
+<!-- start panel-tabset: Facet Plot -->
+::: {.panel-tabset}
+
+### Intro
+
+You can partition a plot into a matrix of panels and display a different subset of the data in each panel. This is useful when you want to compare patterns in the data by group.
+
+<!-- start .panel-tabset: Intro -->
+::: {.panel-tabset}
+
+### Example 1
+<!-- Scenario 1: Visualize the trends of multiple variables across times.  -->
+
+<!-- start columns -->
+::: {.columns}
+
+::: {.column width="50%"}
+
+<!-- ***Withouit faceting*** -->
+**Without faceting**
+```{r}
+#| autorun: true
+#| echo: false
+target_vars <- c("pce", "pop", "psavert", "unemploy")
+
+data.table(ggplot2::economics_long) %>%
+  .[variable %in% target_vars,] %>%
+  ggplot(.) +
+  geom_line(aes(x = date, y = value, color = variable)) +
+  labs(
+    x = "Date",
+    y = "Value",
+    color = "Variable"
+  )
+```
+Because the scales of the y-axis are different by variable, it is hard to compare the trends across variables in the same plot.
+:::
+
+
+::: {.column width="50%"}
+
+**With faceting**
+```{r}
+#| autorun: true
+#| echo: false
+data.table(ggplot2::economics_long) %>%
+  .[variable %in% target_vars,] %>%
+  ggplot(.) +
+  geom_line(aes(x = date, y = value)) +
+  # facet_wrap(~variable, scales = "free_y")
+  facet_wrap(vars(variable), scales = "free_y")
+```
+:::
+<!-- end columns -->
+:::
+
+### Example 2
+<!-- Scenario 2: Visualize the information by group. -->
+
+Here, I am showing the distribution of `charges` by `sex` and `region` in the same plot.
+
+```{r}
+#| autorun: true
+#| echo: false
+#| fig-dpi: 100
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+ggplot(data = insurance) +
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5) +
+  facet_grid(rows = vars(sex), cols = vars(region)) +
+  labs(
+    x = "Medical Charges",
+    y = "Frequency"
+  )
+```
+
+<!-- end .panel-tabset: Intro -->
+:::
+
+### facet_wrap()
+
+[`facet_wrap()` makes a long ribbon of panels (generated by any number of variables). You can also wrap it into 2 rows.]{style="color: blue;"}
+
+
+**Syntax:**
+```{r}
+#| eval: false
+facet_wrap(vars(var_x, var_y), scales = "fixed", nrow = 2, ncol = 2)
+```
+
++ Inside `vars()`, specify variables used for faceting groups.
++ `ncol` and `nrow` control the number of columns and rows (you only need to set one).
++ `scales` controls the scales of the axes in the panel (either `"fixed"` (the default), `"free_x"`, or `"free_y"`, `"free"`).
+
+<br>
+
+**Try it!**
+
+Play around with the `facet_wrap()` function in the code below. See how the choice of faceting groups, number of rows and columns and the scales of the axes affect the appearance of the plot.
+
+```{webr-r}
+#| warning: false
+base_plot <- ggplot(insurance)+
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5) +
+  facet_wrap(vars(region), nrow = 1, scales = "fixed")
+
+# try vars(region, sex)
+```
+
+
+### facet_grid()
+
+[`facet_grid()` produces a 2 row grid of panels defined by variables which form the rows and columns.]{style="color: blue;"}
+
+
+**Syntax:**
+```{r}
+#| eval: false
+facet_grid(rows = vars(var_x), cols = var(var_y)), scales = "fixed")
+```
+
++ The graph is partitioned by the levels of the groups `var_x` and `var_y` in the rows and columns, respectively.
++ `ncol` and `nrow` control the number of columns and rows (you only need to set one).
++ `scales` controls the scales of the axes in the panel (either `fixed` (the default), `free_x`, or `free_y`, `free`).
+
+<br>
+
+**Try it!**
+
+```{webr-r}
+ggplot(insurance)+
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5) +
+  facet_grid(rows = vars(sex), cols = vars(region), scales = "fixed")
+```
+
+
+<!-- end panel-tabset: Facet Plot -->
+:::
+
+
+## facet_wrap() vs facet_grid()
+
+<!-- start panel:facet vs grid   --> 
+:::{.panel-tabset} 
+### Basics
+
+[So, when should you use `facet_wrap()` and `facet_grid()`?]{style="color: blue;"}
+
+1. In my opinion, if you have a single variable to make a facet, you should use `facet_wrap()`. Unlike `facet_grid()`, `facet_wrap()` can control the number of rows and columns in the panel.
+
+2. If you have two variables to make a facet, you should use `facet_grid()`.
+  
+
+3. In `facet_grid()`, you don't always need to provide both `rows` and `columns` variables. If only one is specified, the produced plot will look like the one from `facet_wrap()` but you cannot wrap the panels into 2 rows.
+
+### Example
+
+<!-- start panel-tabset: Example -->
+:::{.panel-tabset}
+
+### One Faceting Variables
+
+```{webr-r}
+#| autorun: false
+
+# Prepare the base histogram plot
+base <- ggplot(insurance)+
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5)
+
+# === fact_wrap === #
+base + 
+  facet_wrap(vars(region), scales = "fixed", nrow = 2)
+
+# === fact_grid === #
+base + 
+  facet_grid(cols = vars(region), scales = "fixed") # use vars(region) for the rows
+# Note that you cannot wrap the panels into 2 rows.
+
+
+base + 
+  facet_grid(rows = vars(region), scales = "fixed") # use vars(region) for the rows
+```
+
+### Two Faceting Variables
+
+```{webr-r}
+#| autorun: false
+# Prepare the base histogram plot
+base <- ggplot(insurance)+
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5)
+
+# === fact_wrap === #
+base + 
+  facet_wrap(vars(region, sex), scales = "fixed", nrow = 2)
+
+# === fact_grid === #
+base + 
+  facet_grid(rows = vars(sex), cols = vars(region), scales = "fixed")
+```
+<!-- end panel-tabset: Example -->
+:::
+
+<!-- end panel:facet vs grid  --> 
+:::
+
+
+## How can we modify the facet labels?
+
+See the following document: [How can I set different axis labels for facets?](https://ggplot2.tidyverse.org/articles/faq-faceting.html#how-can-i-set-different-axis-labels-for-facets). You can use the `labeller` argument in the `facet_wrap()` and `facet_grid()` function to modify the facet labels.
+
+Here, I will show another way to modify the facet labels. You can 
+
+<!-- start panel:modify facet label   --> 
+:::{.panel-tabset}
+### Preparation
+
+
+
+```{r}
+#| include: false
+#| eval: false
+insurance_url <- "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/insurance.csv"
+insurance <- fread(insurance_url)
+```
+
+First, I re-define region and sex as factor variables. **In doing so, I will add labels for each level of the variables.** If labels are attached to the variables, ggplot use those names in the facet labels. 
+
+```{webr-r}
+#| autorun: true
+
+# To use the following code, make sure that your insurance data is data.table class. 
+insurance[,`:=`(
+  # --- re-define region as factor variable --- #
+  region = 
+    factor(
+      region, 
+      levels = c("northeast", "northwest", "southeast", "southwest"), 
+      labels = c("North East", "North West", "South East", "South West")
+    ),
+  # --- re-define sex as factor variable --- #
+  sex = 
+    factor(
+      sex,
+      levels = c("female", "male"),
+      labels = c("Female", "Male")
+    )
+  )]
+```
+
+
+### facet_wrap
+
+Now, the facet labels are changed to "North East", "North West", "South East", and "South West" for the `region` variable.
+
+```{webr-r}
+#| autorun: true
+ggplot(insurance)+
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5)+
+  facet_wrap(vars(region), nrow = 2)
+```
+
+### facet_grid
+
+```{webr-r}
+#| autorun: true
+ggplot(insurance)+
+  geom_histogram(aes(x = charges), fill = "blue", alpha = 0.5)+
+  facet_grid(rows = vars(region), cols = vars(sex))
+```
+<!-- end panel:modify facet label  --> 
+:::
+
+
+## Multiple Datasets in One Figure {#multiple-datasets-in-one-figure}
+
+<!-- start panel-tabset: multiple datasets in one figure (optional) -->
+::: {.panel-tabset}
+### Basics
+
+So far, we have been using the same dataset for each layer of the plot. But you can use multiple datasets in a single plot.
+
+<br>
+
+**Note**  
+
++ If you specify data in `ggplot()` at the beginning (e.g., `ggplot(data = dataset)`), the data applies to ALL the subsequent `geom_*()`s unless overwritten locally inside individual `geom_*()`s.
++ To use multiple datasets in a single plot, you just need to specify what dataset to use locally inside individual `geom_*()`s.
+
+
+<br>
+
+### Example
+
++ `insurance_southwest` is a subset of the `insurance` data where `region` is `southwest`.
++ `insurance_northeast` is a subset of the `insurance` data where `region` is `northeast`.
+
+
+```{webr-r}
+insurance_southwest <- insurance[region == "South West",]
+insurance_northeast <- insurance[region == "North East",]
+
+# === Create economics_month dataset === #
+ggplot() +
+  geom_point(
+    data = insurance_southwest,
+    aes(x = bmi, y = charges),
+    color = "blue"
+  ) +
+  geom_point(
+    data = insurance_northeast,
+    aes(x = bmi, y = charges),
+    color = "red"
+  )
+```
+
+### How can we make the legend?
+
+You can do something like this:
+```{webr-r}
+#| autorun: true
+insurance_southwest <- insurance[region == "South West",]
+insurance_northeast <- insurance[region == "North East",]
+
+# === Create economics_month dataset === #
+ggplot() +
+  geom_point(
+    data = insurance_southwest,
+    aes(x = bmi, y = charges, color = "South West"),
+  ) +
+  geom_point(
+    data = insurance_northeast,
+    aes(x = bmi, y = charges, color = "North East")
+  ) +
+  labs(color = "Region")
+```
+
+
+
+<!-- end panel-tabset: multiple datasets in one figure (optional) -->
+:::
+
+
+## ggplot2 Themes (Optional) {#themes} 
+<br>
+
+You can change the theme of the plot.
+
++ `ggplot2` ships several pre-made themes that you can apply to your plots. (e.g, `theme_minimal()`, `theme_bw()` (I use this often), `theme_classic()`). See [this](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+
++ `ggthemes` package provides additional ggplot themes. See [this](https://ggplot2.tidyverse.org/reference/ggtheme.html) for full list of available themes.
+
+<br>
+
+
+### Try it!
+
+```{webr-r}
+library(ggthemes)
+
+ggplot(data = insurance) +
+  geom_point(aes(x = bmi, y = charges)) +
+  theme_stata()
+```
+
+
+## theme() Function (Optional) {#theme-function}
+
+`theme()` function let you tweak the details of all non-data related components of a plot (e.g., font type in the plot, position of the legend and title, etc.). There are so many components you can modify with the `theme()` function. See [this](https://ggplot2.tidyverse.org/reference/theme.html) for full list of options.
+
+For more information, see:
+
++ [Chapter 17 Themes, ggplot2: Elegant Graphics for Data Analysis (3e)](https://ggplot2-book.org/themes)
+
+<br>
+
+### Try it!
+
+For example, you can change the position of the title and legend with the following `theme()` options.
+
+```{webr-r}
+ggplot(data = insurance) +
+  geom_point(aes(x = bmi, y = charges, color = region)) +
+  labs(titile = "Scatter plot of BMI and smoke status") +
+  theme(
+    plot.title = element_text(hjust = 0.5), #center the title
+    legend.position = "bottom" # move the legend to the bottom
+  )
+```
+
+## Save the Plot {#save-the-plot}
+
+<!-- start panel:save the plot   --> 
+:::{.panel-tabset} 
+### Basics
+
+**Two options**
++ Use the `ggsave()` function from the `ggplot2` package. 
++ Use the "Export" button in the RStudio plot viewer.
+:::
+
+<br>
+
+**Syntax:**
+
+```r
+ggsave(filename, plot = plot_object)
+```
++ `filename`: the name of the file (including path) to save the plot to. (e.g., filename = "Data/plot.png")
++ `plot`: the plot object to save.
+ 
+### Example
+
+Run the following code on your RStudio. Make sure you are opening the RProject.
+
+
+```{r}
+#| eval: false
+library(ggplot2)
+library(rio)
+
+insurance_url <- "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/insurance.csv"
+insurance <- import(insurance_url)
+
+ggplot(data = insurance) +
+  geom_boxplot(aes(x = sex, y = charges, fill = region)) +
+  labs(
+    x = "Sex",
+    y = "Medical costs",
+    title = "Distribution of individual medical mosts by sex and region"
+  )
+
+# --- Sve plot --- #
+ggsave(filename = "Data/insurance.png")
+ggsave(filename = "Data/insurance.pdf")
+ggsave(filename = "Data/insurance2.png", plot = plot_insurance)
+```
+<!-- end panel:save the plot  --> 
+:::
+
+
+## Summary 2 {.center}
+
+For this second section, you learned a few advanced topics in ggplot2. 
+
+Now, you know;
+
++ how to create facet plots with `facet_wrap()` and `facet_grid()`.
++ when to use `facet_wrap()` and `facet_grid()`.
++ how to visualize multiple datasets in a single plot.
++ how to save the plot.
+
+
+That's it!
+
+
+## Exercise Problems {#exercise-problems3}
+
+<!-- start panel-tabset: Exercise problem  -->
+:::{.panel-tabset}
+
+### Exercise Problem 1 (basic)
+<!-- start panel-tabset: Exercise Problem 1 -->
+::: {.panel-tabset}
+
+### Data
+
+For this exercise problem, you will use the `gapminder` data from the `gapminder` package. 
+
+```{webr-r}
+#| autorun: false
+#| cache: false
+# install the gapminder package if you haven't done so.
+# install.packages("gapminder")
+
+# Load the data from the gapminder package
+data(gapminder, package="gapminder")
+
+gapminder <- as.data.table(gapminder) # Convert the data to a data.table object
+```
+
+
+### Instructions
+
+1. Find the number of unique countries in the data.
+
+2. Calculate the mean life expectancy for the entire dataset.
+
+3. Create a dataset by subsetting the data for the year 2007. Create a scatter plot of GDP per capita vs. life expectancy for the year 2007, color-coded by continent.
+
+4. Create a bar plot showing the total population for each continent in 2007. Fill the bars with blue and set the transparency to 0.5.
+
+5. Subset the data for the United States, China, India, and the United Kingdom. Create a line plot showing the change in life expectancy over time for these countries.
+
+6. Create a scatter plot of GDP per capita vs. life expectancy for the entire gapminder dataset. Use `facet_wrap` to create separate plots for each continent.
+
+7. Group the data by continent and calculate the mean GDP per capita for each continent for each year. Create a line plot showing the trend of mean GDP per capita for each continent over time.
+
+```{webr-r}
+# You can write your code here
+```
+
+
+### Solutions
+
+```{webr-r}
+# === Part 1 === #
+#' There are several approaches.
+#' The most straightforward way is to use the unique() function, and then count the number of unique values.
+length(unique(gapminder$country))
+
+# Alternatively, you could use the uniqueN() function from the data.table package.
+# gapminder[, uniqueN(country)]
+
+# === Part 2 === #
+mean(gapminder$lifeExp)
+# same as
+# gapminder[, mean(lifeExp)]
+
+# === Part 3 === #
+gapminder_2007 <- gapminder[year == 2007,]
+
+ggplot(data = gapminder_2007) +
+  geom_point(aes(x = gdpPercap, y = lifeExp, color = continent)) +
+  labs(
+    x = "GDP per capita",
+    y = "Life expectancy",
+    title = "Scatter plot of GDP per capita vs. life expectancy in 2007"
+  )
+
+# === Part 4 === #
+ggplot(data = gapminder_2007) +
+  geom_bar(aes(x = continent, y = pop), stat = "identity", fill = "blue", alpha = 0.5) +
+  labs(
+    x = "Continent",
+    y = "Total population",
+    title = "Total population by continent in 2007"
+  )
+
+
+# === Part 5 === #
+gapminder[country %in% c("United States", "China", "India", "United Kingdom"),] %>%
+  ggplot(data = .)+
+  geom_line(aes(x = year, y = lifeExp, color = country))+
+  labs(
+    title = "Life Expectancy in the selected countries",
+    x = "Year", y = "Life Expectancy"
+  )+
+  theme_bw()+
+  theme(plot.title = element_text(hjust = 0.5))
+
+# === Part 6 === #
+ggplot(data = gapminder) +
+  geom_point(aes(x = gdpPercap, y = lifeExp, color = continent)) +
+  facet_wrap(vars(continent), scales = "fixed") +
+  labs(
+    x = "GDP per capita",
+    y = "Life expectancy",
+    title = "Scatter plot of GDP per capita vs. life expectancy by continent"
+  )
+
+# === Part 7 === #
+gapminder[, .(mean_gdp = mean(gdpPercap)), by = .(continent, year)] %>%
+  ggplot(data = .) +
+  geom_line(aes(x = year, y = mean_gdp, color = continent)) +
+  labs(
+    x = "Year",
+    y = "Mean GDP per capita",
+    title = "Trend of mean GDP per capita by continent"
+  )
+```
+<!-- end panel-tabset: Exercise Problem 1 -->
+:::
+
+### Exercise Problem 2 (basic)
+
+<!-- start pane-tabset: Exercise Problem 2 -->
+:::{.panel-tabset}
+
+
+### Data
+
+For this exercise problem, we will use `economics` dataset from the ggplot2 package. You need to use data manipulation and visualization techniques using the `data.table` and `ggplot2` packages.
+
+```{webr-r}
+# === Loading data === #
+economics <- as.data.table(ggplot2::economics)
+# take a look at the data
+economics
+```
+
+### Instruction
+
+1. As you already know by now, the `economics` dataset contains various economic indicators for the United States. We want to create a line plot showing the trends of all economic indicators over time. Each economic indicator is stored in a separate column in the data, and you can visualize each  indicator by creating a single line plot, separately. But, there is a better way to do this. It should look like the following plot.
+
+```{r}
+#| autorun: true
+#| echo: false
+#| fig-dpi: 100
+#| fig-width: 8
+#| fig-height: 6
+#| fig-align: center
+
+economics_long <- melt(as.data.table(ggplot2::economics), id.vars = "date")
+
+ggplot(data = economics_long) +
+  geom_line(aes(x = date, y = value)) +
+  facet_wrap(vars(variable), scales = "free_y")
+```
+
+```{webr-r}
+# You can write your code here
+
+```
+
+### Solutions
+
+```{webr-r}
+# Since we want use column names as variable names, we need to convert the data to a long format. We melt all the columns except the date column.
+economics_long <- melt(economics, id.vars = "date")
+
+# Then, create a facet plot where each panel shows the trend of one economic indicator.
+# Since we only have one variable to facet, facet_wrap() function is more appropriate.
+# Also, we set scales = "free_y" to make the y-axis scales free across facets.
+ggplot(data = economics_long) +
+  geom_line(aes(x = date, y = value)) +
+  facet_wrap(vars(variable), scales = "free_y")
+```
+<!-- end pane-tabset: Exercise Problem 2 -->
+:::
+
+### Exercise Problem 3 (challenging)
+
+<!-- start panel-tabset: Exercise 3-->
+:::{.panel-tabset}
+### Instruction
+
+For this exercise problem, you will use "corn_yield_dt.rds" in the "Data" folder. I obtained this from [USDA-NASS Quick Stats database](https://quickstats.nass.usda.gov/). The data contains the **county-level** corn yield data (in BU / ACRE) for each major corn production state in the US Midwest from 2000 to 2022. 
+
+<br>
+
+1. Load the data and take a look at it. 
+
+2. Convert the data to a `data.table` object. The `Value` column contains the corn yield data. Rename the column to `yield`. 
+
+3. Let's derive the state-level annual average corn yield data by calculating the mean of corn yield by state and year. Create a line plot of the annual trend of corn yield in Minnesota by taking `year` for the x-axis and the derived mean yield for the `y-axis.`
+
+4. Create line plots showing the trend of annual corn yield for each state in the same plot. 
+
+5. Create a facet plot showing each state's annual corn yield trend. To compare the trends across states, use `scales = "fixed"`.
+
+*Hint*: `state_alpha` is the two-letter state abbreviation for each state.
+
+6. Create a new dataset that contains the overall average corn yield across states by taking the mean of the `yield` by `year`. Add a line plot of this dataset to the plot you created in the previous step. Use red dashed line to represent this line.
+
++ If you could add a legend to the plot to indicate what the red dashed line means, that would be great! To do this, you need to use `scale_color_manual()` function.
+
+
+### Solutions
+
+```{webr-r}
+# === Part 1 === #
+yield_dt <- readRDS("Data/corn_yield_dt.rds")
+
+# === Part 2 === #
+yield_dt <- 
+  as.data.table(yield_dt) %>% 
+  setnames("Value", "yield")
+
+# === Part 3 === #
+mean_yield_state_y_dt <- 
+  yield_dt %>%
+  .[, .(mean_yield = mean(yield, na.rm = TRUE)), by = .(state_alpha, year)]
+
+mean_yield_state_y_dt %>%
+  .[state_alpha == "MN",] %>%
+  ggplot(data = .) +
+    geom_line(aes(x = year, y = mean_yield)) +
+    labs(
+      x = "Year",
+      y = "Mean corn yield (BU / ACRE)",
+      title = "Average corn yield produced in Minnesota"
+    )
+
+
+# === Part 4 === #
+ggplot(data = mean_yield_state_y_dt) +
+  geom_line(aes(x = year, y = mean_yield, color = state_alpha)) +
+  labs(
+      x = "Year",
+      y = "Mean corn yield (BU / ACRE)",
+      title = " Corn yield trend in Minnesota"
+    )
+
+# === Part 5 === #
+ggplot(data = mean_yield_state_y_dt) +
+  geom_line(aes(x = year, y = mean_yield)) +
+  facet_wrap(vars(state_alpha), scales = "fixed") +
+  labs(
+      x = "Year",
+      y = "Mean corn yield (BU / ACRE)",
+      title = "Corn yield trend by state"
+    )
+
+# === Part 6 === #
+mean_yield_year_dt <- 
+  yield_dt %>%
+  .[, .(mean_yield = mean(yield)), by = .(year)]
+
+
+ggplot() +
+  geom_line(data = mean_yield_state_y_dt, aes(x = year, y = mean_yield)) +
+  facet_wrap(vars(state_alpha), scales = "fixed") +
+  geom_line(data = mean_yield_year_dt, aes(x = year, y = mean_yield), linetype = "dashed", color = "red") +
+  labs(
+      x = "Year",
+      y = "Corn yield (BU / ACRE)",
+      title = "Corn yield trend by state"
+    ) +
+  scale_color_manual(
+    values = c("Average corn yield across states" = "red")
+    ) +
+  theme_bw() +
+  theme(
+    legend.position = "bottom"
+  )
+
+
+# Furthermore, you can add a legend to the plot by using the following code.
+# ggplot() +
+#   geom_line(data = mean_yield_state_y_dt, aes(x = year, y = mean_yield)) +
+#   facet_wrap(vars(state_alpha), scales = "fixed") +
+#   geom_line(data = mean_yield_year_dt, aes(x = year, y = mean_yield, color = "Average corn yield across states"), linetype = "dashed") +
+#   labs(
+#       x = "Year",
+#       y = "Corn yield (BU / ACRE)",
+#       title = "Corn yield trend by state"
+#     ) +
+#   scale_color_manual(
+#     values = c("Average corn yield across states" = "red")
+#     ) +
+#   theme_bw() +
+#   theme(
+#     legend.position = "bottom"
+#   )
+```
+<!-- end panel-tabset: Exercise 3-->
+:::
+
+<!-- end panel-tabset: Exercise Problem -->
+:::
+
+
+
+
+

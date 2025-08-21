@@ -10,6 +10,7 @@
     - [Lecture 1](Lec1.html)
     - [Lecture 2](Lec2.html)
     - [Lecture 3](Lec3.html)
+    - [Lecture 4](Lec4.html); [Exercise](Lec4_exercise.html)
     
 
 

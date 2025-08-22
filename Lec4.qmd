@@ -293,7 +293,9 @@ Let's get the value of the standard error of the coefficient estimate of `educat
 
 
 ```{webr-r}
+reg_summary$coefficients["education", "Std. Error"] 
 
+# or reg_summary$coefficients[2, 2]
 
 ```
 
@@ -1382,7 +1384,12 @@ datasummary(
 **Table 1**
 
 ```{webr-r}
-
+datasummary(
+  formula = 
+    year *  (earnings + age) ~ gender * (Mean + SD),
+  data = CPSSW9204,
+  output = "gt"
+  )
 ```
 
 <br>
@@ -1390,7 +1397,12 @@ datasummary(
 **Table 2: Rename some labels in Table 1**
 
 ```{webr-r}
-
+datasummary(
+  formula = 
+    (Year = year) * ((`Avg. hourly earnings` = earnings) + (Age = age))~ gender * (Mean + (`Std.Dev` = SD)),
+  data = CPSSW9204,
+  output = "gt"
+  )
 ```
 
 

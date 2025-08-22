@@ -642,9 +642,23 @@ Up to this point, as long as you understand the following points, you are good t
 
 ## Introduction to Monte Carlo Simulations
 
-<br>
+:::{.panel-tabset} 
+
+### Analogy
+
+- Imagine you want to know the chance of winning a dice game. Instead of trying to calculate the exact probability with formulas, you could just roll the dice thousands of times, record the outcomes, and then see how often you win.  
+
+- That’s basically what Monte Carlo Simulation does: it uses repeated random experiments to approximate answers to problems that are hard to solve analytically.”
+
+- Key ideas:  
+  - We model uncertainty with randomness.  
+  - We simulate many scenarios (sometimes thousands or millions).  
+  - We average the results to estimate probabilities, risks, or outcomes.
+
 
 ### What is it?
+
+
 
 [Monte Carlo simulation is a technique to approximate a likelihood of possible outcomes (e.g., predictions, estimates) from a model by iteratively running the model on artificially created datasets. In every iteration, the datasets are randomly sampled from the assumed data generating process, so it varies every iteration.]{style="color: blue;"}
 
@@ -654,8 +668,7 @@ Up to this point, as long as you understand the following points, you are good t
 
 <br>
 
-:::{.fragment .fade-up}
-### So, how is the Monte Carlo simulation used in Econometrics?
+### Monte Carlo simulation in Econometrics
 
 In econometrics, the Monte Carlo simulation is used to evaluate the performance of a statistical procedure or the validity of theories in a realistic setting.
 

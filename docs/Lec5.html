@@ -2489,16 +2489,38 @@ Qingyin Cai
 </ul></section></section><section><section id="monte-intro" class="title-slide slide level1 center"><h1>Introduction to Monte Carlo Simulations</h1>
 
 </section><section id="introduction-to-monte-carlo-simulations" class="slide level2"><h2>Introduction to Monte Carlo Simulations</h2>
-<p><br></p>
-<h3 id="what-is-it">What is it?</h3>
+<div class="panel-tabset">
+<ul id="tabset-14" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-14-1">Analogy</a></li>
+<li><a href="#tabset-14-2">What is it?</a></li>
+<li><a href="#tabset-14-3">Monte Carlo simulation in Econometrics</a></li>
+</ul>
+<div class="tab-content">
+<div id="tabset-14-1">
+<ul>
+<li><p>Imagine you want to know the chance of winning a dice game. Instead of trying to calculate the exact probability with formulas, you could just roll the dice thousands of times, record the outcomes, and then see how often you win.</p></li>
+<li><p>That’s basically what Monte Carlo Simulation does: it uses repeated random experiments to approximate answers to problems that are hard to solve analytically.”</p></li>
+<li>
+<p>Key ideas:</p>
+<ul>
+<li>We model uncertainty with randomness.<br>
+</li>
+<li>We simulate many scenarios (sometimes thousands or millions).<br>
+</li>
+<li>We average the results to estimate probabilities, risks, or outcomes.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="tabset-14-2">
 <p><span style="color: blue;">Monte Carlo simulation is a technique to approximate a likelihood of possible outcomes (e.g., predictions, estimates) from a model by iteratively running the model on artificially created datasets. In every iteration, the datasets are randomly sampled from the assumed data generating process, so it varies every iteration.</span></p>
 <ul>
 <li>The incorporation of randomness in the simulation is the key feature of the Monte Carlo simulation. <em>It is mimicking the randomness of real-world phenomena.</em>
 </li>
 </ul>
 <p><br></p>
-<div class="fragment fade-up">
-<h3 id="so-how-is-the-monte-carlo-simulation-used-in-econometrics">So, how is the Monte Carlo simulation used in Econometrics?</h3>
+</div>
+<div id="tabset-14-3">
 <p>In econometrics, the Monte Carlo simulation is used to evaluate the performance of a statistical procedure or the validity of theories in a realistic setting.</p>
 <p><strong>For example</strong></p>
 <p>Suppose that a researcher came up with a new estimator to estimate the coefficients of a regression model.</p>
@@ -2508,6 +2530,8 @@ Qingyin Cai
 <li>So, to understand the performance of the estimator (e.g., unbiasedness and efficiency), we need to examine the properties of the probability distribution of the estimator.</li>
 <li>We use Monte Carlo simulation to approximate the probability distribution of the estimator!</li>
 </ul>
+</div>
+</div>
 </div>
 </section><section id="monte-demo" class="slide level2 center"><h2>Example: Binomial Distribution</h2>
 <p>Think about the following example.</p>
@@ -2547,12 +2571,12 @@ Qingyin Cai
 </section><section id="demonstration-binomial-distribution" class="slide level2"><h2>Demonstration: Binomial Distribution</h2>
 <!-- start panel:Demonstration   -->
 <div class="panel-tabset">
-<ul id="tabset-14" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-14-1">A Single Iteration</a></li>
-<li><a href="#tabset-14-2">Multiple Iterations</a></li>
+<ul id="tabset-15" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-15-1">A Single Iteration</a></li>
+<li><a href="#tabset-15-2">Multiple Iterations</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-14-1">
+<div id="tabset-15-1">
 <p>Let’s start writing code for a single iteration to get an idea of the Monte Carlo simulation process in R.</p>
 <ul>
 <li>We want to repeat this 1000 times.</li>
@@ -2560,7 +2584,7 @@ Qingyin Cai
 <div id="qwebr-insertion-location-18"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div>
-<div id="tabset-14-2">
+<div id="tabset-15-2">
 <div id="qwebr-insertion-location-19"></div>
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 <!-- end panel:Demonstration  -->
@@ -2572,9 +2596,9 @@ Qingyin Cai
 </section><section id="exercise-problem-weak-low-of-large-number" class="slide level2 scrollable"><h2>Exercise Problem: (Weak) Low of Large Number</h2>
 <!-- start panel:exercise   -->
 <div class="panel-tabset">
-<ul id="tabset-15" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-15-1">Questions</a></li></ul>
+<ul id="tabset-16" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-16-1">Questions</a></li></ul>
 <div class="tab-content">
-<div id="tabset-15-1">
+<div id="tabset-16-1">
 <p>Weak law of large number states that the sample mean converges (in probability) to the population mean as the sample size increases. In other words, the sample mean more accurately estimates the population mean as the sample size increases.</p>
 <p><span class="math display">\[\bar{X}_n = \frac{1}{n}\sum_{n=1}^{n} X_i E[X] \xrightarrow{p} E[X]\]</span></p>
 <p>Lets check this using Monte Carlo simulation! We compare the distribution of sample mean with different sample size. Let’s compare two sample sizes: <span class="math inline">\(n=100\)</span> and <span class="math inline">\(n=1000\)</span>.</p>
@@ -2596,12 +2620,12 @@ Qingyin Cai
 </section><section id="exercise-problem-two-estimators-to-estimate-the-population-mean-optional" class="slide level2 scrollable"><h2>Exercise Problem: Two estimators to estimate the population mean? (optional)</h2>
 <!-- start panel:exercise   -->
 <div class="panel-tabset">
-<ul id="tabset-16" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-16-1">Questions</a></li>
-<li><a href="#tabset-16-2">Hint</a></li>
+<ul id="tabset-17" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-17-1">Questions</a></li>
+<li><a href="#tabset-17-2">Hint</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-16-1">
+<div id="tabset-17-1">
 <p>Suppose you’re interested in estimating the unknown population mean of men’s heights (i.e., <span class="math inline">\(\mu\)</span>) in the US. We have randomly sampled data with the size of <span class="math inline">\(n=1000\)</span>. Let <span class="math inline">\(X_i\)</span> denote the individual <span class="math inline">\(i\)</span>’s height in the sample. <strong>How should we use the sample data to estimate the population mean?</strong></p>
 <p><br></p>
 <p>Your friends suggested two different estimators:</p>
@@ -2633,7 +2657,7 @@ E[X_1] &amp;= \mu
 </div>
 </div>
 </div>
-<div id="tabset-16-2">
+<div id="tabset-17-2">
 <ol type="1">
 <li>Repeat the following processes 1000 times:</li>
 </ol>
@@ -2655,13 +2679,13 @@ E[X_1] &amp;= \mu
 <code>foreach</code> Function</h2>
 <!-- start panel:foreach   -->
 <div class="panel-tabset">
-<ul id="tabset-17" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-17-1">Basics</a></li>
-<li><a href="#tabset-17-2">Example</a></li>
-<li><a href="#tabset-17-3">Change the Output Format</a></li>
+<ul id="tabset-18" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-18-1">Basics</a></li>
+<li><a href="#tabset-18-2">Example</a></li>
+<li><a href="#tabset-18-3">Change the Output Format</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-17-1">
+<div id="tabset-18-1">
 <p><span style="color: blue;">The <code>foreach</code> function is a function of the <code>foreach</code> package. It is used to iterate the same process over and over again, similar to the <code>for loop</code> function.</span></p>
 <p><br></p>
 <p><strong>Basic Syntax</strong></p>
@@ -2687,7 +2711,7 @@ E[X_1] &amp;= \mu
 </ul>
 <p><br></p>
 </div>
-<div id="tabset-17-2">
+<div id="tabset-18-2">
 <p>Using the <code>for loop</code> and <code>foreach</code> function, let’s calculate the square of the numbers from 1 to 10, respectively.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -2700,7 +2724,7 @@ E[X_1] &amp;= \mu
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div></div>
 </div>
-<div id="tabset-17-3">
+<div id="tabset-18-3">
 <p>By default, <code>foreach</code> function returns each iteration’s result as a list. But you can choose the format of the output by using the <code>.combine</code> argument.</p>
 <ul>
 <li>
@@ -2726,15 +2750,15 @@ E[X_1] &amp;= \mu
 
 </section><section id="review" class="slide level2"><h2>Review</h2>
 <div class="panel-tabset">
-<ul id="tabset-18" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-18-1">Basics of R</a></li>
-<li><a href="#tabset-18-2">Data Manipulation with <code>data.table</code></a></li>
-<li><a href="#tabset-18-3">Visualization with <code>ggplot2</code></a></li>
-<li><a href="#tabset-18-4">Regression &amp; Reporting</a></li>
-<li><a href="#tabset-18-5">Functions, Loops, &amp; Monte Carlo</a></li>
+<ul id="tabset-19" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-19-1">Basics of R</a></li>
+<li><a href="#tabset-19-2">Data Manipulation with <code>data.table</code></a></li>
+<li><a href="#tabset-19-3">Visualization with <code>ggplot2</code></a></li>
+<li><a href="#tabset-19-4">Regression &amp; Reporting</a></li>
+<li><a href="#tabset-19-5">Functions, Loops, &amp; Monte Carlo</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-18-1">
+<div id="tabset-19-1">
 <ul>
 <li><p>Coding rules &amp; projects: file paths, working directories, using <code>.Rproj</code>.</p></li>
 <li><p>Data types: numeric, character, logical; handling <code>NA</code>.</p></li>
@@ -2742,7 +2766,7 @@ E[X_1] &amp;= \mu
 <li><p>Base math &amp; objects: assignment, arithmetic, functions; saving/loading data.</p></li>
 </ul>
 </div>
-<div id="tabset-18-2">
+<div id="tabset-19-2">
 <ul>
 <li><p><code>DT[i, j, by]</code> pattern and chaining.</p></li>
 <li><p>Row filtering and column selection; create/modify columns with <code>:=</code>.</p></li>
@@ -2750,7 +2774,7 @@ E[X_1] &amp;= \mu
 <li><p>Reshaping with <code>melt()</code> and <code>dcast()</code> (wide ↔︎ long).</p></li>
 </ul>
 </div>
-<div id="tabset-18-3">
+<div id="tabset-19-3">
 <ul>
 <li><p>Grammar of Graphics: <code>data</code> + <code>aes()</code> + <code>geom_*</code>.</p></li>
 <li><p>Common plots: scatter, line, bar, histogram, box, density; faceting.</p></li>
@@ -2758,7 +2782,7 @@ E[X_1] &amp;= \mu
 <li><p>Labels/themes: axes, titles, legends; layering multiple datasets.</p></li>
 </ul>
 </div>
-<div id="tabset-18-4">
+<div id="tabset-19-4">
 <ul>
 <li><p>Linear models with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>.</p></li>
 <li><p><code>modelsummary</code> for publish-ready regression tables; <code>datasummary</code> for descriptives.</p></li>
@@ -2766,7 +2790,7 @@ E[X_1] &amp;= \mu
 <li><p>Quarto reporting: render to HTML/PDF for reproducible outputs.</p></li>
 </ul>
 </div>
-<div id="tabset-18-5">
+<div id="tabset-19-5">
 <ul>
 <li><p>User-defined functions <code>function()</code>: arguments, returns, defaults; save in .R and <code><a href="https://rdrr.io/r/base/source.html">source()</a></code>.</p></li>
 <li><p>Loops function <code>for()</code>: basics, saving outputs, multiple outputs.</p></li>
@@ -2777,12 +2801,12 @@ E[X_1] &amp;= \mu
 </div>
 </section><section id="review-exercise" class="slide level2 scrollable"><h2>Review Exercise</h2>
 <div class="panel-tabset">
-<ul id="tabset-20" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-20-1">Instructions</a></li>
-<li><a href="#tabset-20-2">Questions</a></li>
+<ul id="tabset-21" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-21-1">Instructions</a></li>
+<li><a href="#tabset-21-2">Questions</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-20-1">
+<div id="tabset-21-1">
 <p>This exercise integrates all major concepts from our R course. We will use the built-in R datasets <code>mtcars</code> provided.</p>
 <p><strong>Setup (Run this first!)</strong></p>
 <div class="cell">
@@ -2790,17 +2814,17 @@ E[X_1] &amp;= \mu
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div>
 </div>
-<div id="tabset-20-2">
+<div id="tabset-21-2">
 <div class="panel-tabset">
-<ul id="tabset-19" class="panel-tabset-tabby">
-<li><a data-tabby-default="" href="#tabset-19-1">Data Structures and Basic Operations</a></li>
-<li><a href="#tabset-19-2">data.table Operations</a></li>
-<li><a href="#tabset-19-3">Data Visualization</a></li>
-<li><a href="#tabset-19-4">Regression Analysis</a></li>
-<li><a href="#tabset-19-5">Programming</a></li>
+<ul id="tabset-20" class="panel-tabset-tabby">
+<li><a data-tabby-default="" href="#tabset-20-1">Data Structures and Basic Operations</a></li>
+<li><a href="#tabset-20-2">data.table Operations</a></li>
+<li><a href="#tabset-20-3">Data Visualization</a></li>
+<li><a href="#tabset-20-4">Regression Analysis</a></li>
+<li><a href="#tabset-20-5">Programming</a></li>
 </ul>
 <div class="tab-content">
-<div id="tabset-19-1">
+<div id="tabset-20-1">
 <ol type="1">
 <li><p>Show the structure of mtcars_dt</p></li>
 <li><p>Calculate the mean mpg (miles per gallon) for all cars</p></li>
@@ -2812,7 +2836,7 @@ E[X_1] &amp;= \mu
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div>
 </div>
-<div id="tabset-19-2">
+<div id="tabset-20-2">
 <ol type="1">
 <li><p>Create a new column ‘power_ratio’ = hp/wt (horsepower per weight) and add it to mtcars_dt</p></li>
 <li><p>Replace all mpg values less than 15 with NA</p></li>
@@ -2826,7 +2850,7 @@ E[X_1] &amp;= \mu
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div>
 </div>
-<div id="tabset-19-3">
+<div id="tabset-20-3">
 <ul>
 <li>
 <p>Create a scatter plot of wt vs mpg, with:</p>
@@ -2842,7 +2866,7 @@ E[X_1] &amp;= \mu
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div>
 </div>
-<div id="tabset-19-4">
+<div id="tabset-20-4">
 <ol type="1">
 <li><p>Run a regression: mpg ~ hp + wt + factor(cyl)</p></li>
 <li><p>Extract the coefficient for hp from your model</p></li>
@@ -2853,7 +2877,7 @@ E[X_1] &amp;= \mu
 <noscript>Please enable JavaScript to experience the dynamic code cell content on this page.</noscript>
 </div>
 </div>
-<div id="tabset-19-5">
+<div id="tabset-20-5">
 <ol type="1">
 <li>Write a function that calculates mpg per cylinder (mpg/cyl)</li>
 </ol>

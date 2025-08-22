@@ -219,11 +219,11 @@ Let's practice this on your Rstudio!
 
 ### Questions
  
-1. Write a function (you can name it whatever you want) to calculate the area of a circle with a given radius. The function should return the area of the circle. Use `pi`, which is a built-in constant for the value of $\pi$ in R. 
+1. Write a function (you can name it whatever you want) to calculate the area of a circle with a given radius. The function should return the area of the circle. (Hint1: `Area = π × r^2`; Hint2: Use `pi`, which is a built-in constant for the value of $\pi$ in R.)
 
 2. Write a function to count the number of NA values in a given vector. (Hint: use the `is.na()` function.)
 
-3. Write a function called calc_mad that calculates the Median Absolute Deviation (MAD) of a numeric vector. The MAD is a robust measure of variability, defined as the median of the absolute deviations from the median.(Hint: use the `median()` function to calculate the median of a vector. use the `abs()` function to calculate the absolute value of a vector.)
+3. Write a function called `mean_no_na` that calculates the mean (average) of a numeric vector, but ignores any NA values.
 
 <br>
 

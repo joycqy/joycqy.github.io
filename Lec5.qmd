@@ -127,8 +127,10 @@ function_name <- function(arg1, arg2, ...){
 
 <br>
 
-**Note**
-+ You need to define the function name (`function_name`), what kind of inputs the function takes (`arg1`, `arg2`, etc.), and how the function processes using the given input objects.
+**Note**  
+
++ You need to define the function name (`function_name`), what kind of inputs the function takes (`arg1`, `arg2`, etc.), and how the function processes using the given input objects.  
+
 + The `return()` function is used to return the output of the function. By default, the output defined in the last line of the function is returned.
 
 
@@ -194,6 +196,7 @@ acre_to_ha(x = 1)
 :::
 
 ## Load Functions from a File {.center}
+<br>
 
 If you have multiple functions or a long function, you might want to save the function in a separate file and load it when you need it.
 
@@ -233,6 +236,43 @@ Let's practice this on your Rstudio!
 ```
 
 
+### Answers
+
+1. Write a function (you can name it whatever you want) to calculate the area of a circle with a given radius. The function should return the area of the circle. (Hint1: `Area = π × r^2`; Hint2: Use `pi`, which is a built-in constant for the value of $\pi$ in R.)
+
+2. Write a function to count the number of NA values in a given vector. (Hint: use the `is.na()` function.)
+
+3. Write a function called `mean_no_na` that calculates the mean (average) of a numeric vector, but ignores any NA values.
+
+<br>
+
+```{webr-r}
+# Question 1
+circle_area <- function(radius) {
+  area <- pi * radius^2
+  return(area)
+}
+
+circle_area(3)
+
+# Question 2
+count_na <- function(x) {
+  na_count <- sum(is.na(x))
+  return(na_count)
+}
+
+count_na(c(1, 2, NA, 4, NA, 6))
+
+# Question 3
+mean_no_na <- function(x) {
+  avg <- mean(x, na.rm = TRUE)
+  return(avg)
+}
+
+
+mean_no_na(c(1, 2, 3, NA, 5))
+```
+
 :::
 
 ### Exercise 2 (optional) 
@@ -261,6 +301,48 @@ The function should give back a vector of numbers (or it would be even better if
 # You can write your code here.
 ```
 
+
+### Answers
+
+You're a data expert at a store chain. The company needs to study its monthly sales growth to plan better. They expect sales to grow by a fixed percentage each month. Your job is to create an R function that shows sales growth over a year.
+
+For sales growth, use the following formula:
+
+$$S_t = S_0 \times (1 + g)^{t-1}$$ 
+
+, where $S_t$ is the sales in month $t$ , $S_0$  is the starting sales, and $g$ is the growth rate.
+
+Create a function called `monthly_sales_growth` with the following three inputs:
+
++ `initial_sales`: Starting sales (in thousands of dollars).
++ `growth_rate`: Monthly growth rate (as a decimal, like 0.03 for 3% growth).
++ `months`: How many months to predict (usually 12 for a year).
+
+The function should give back a vector of numbers (or it would be even better if you could show in a `data.frame` or `data.table` in which two columns, e.g., month and sales, show the expected sales for each month.)
+
+```{webr-r}
+
+monthly_sales_growth <- function(initial_sales, growth_rate, months = 12) {
+  # months: positive integer (e.g., 12 for a year)
+  t <- seq_len(months) # a vector, or t <- 1: months
+  sales <- initial_sales * (1 + growth_rate)^(t - 1)
+  return(sales) 
+}
+
+# or using data.table/data.frame
+
+monthly_sales_growth <- function(initial_sales, growth_rate, months = 12) {
+  # months: positive integer (e.g., 12 for a year)
+  t <- seq_len(months) # a vector, or t <- 1: months
+  sales <- initial_sales * (1 + growth_rate)^(t - 1)
+  data.frame(month = t, sales = sales) # or data.table(month = t, sales = sales)
+}
+
+
+# Example: $200k starting sales, 3% monthly growth, 12 months
+monthly_sales_growth(initial_sales = 200, growth_rate = 0.03, months = 12)
+
+```
 
 :::
 
@@ -402,7 +484,31 @@ for (i in 1:10){
 }
 ```
  
+### Answers
+In econometric class, we use the `rnorm()` function a lot! It is a function that generates random numbers from a normal distribution. See `?rnorm` for more details.
 
+The basic syntax is `rnorm(n, mean = 0, sd = 1)`, where `n` is the number of random numbers you want to generate, `mean` is the mean of the normal distribution, and `sd` is the standard deviation of the normal distribution. So `rnorm(n, mean = 0, sd = 1)` generates `n` random numbers from a standard normal distribution.
+
+<br>
+
+Generate 1000 random numbers from a standard normal distribution and calculate the mean the numbers (use `mean()` function), and print the results. Repeat this process 10 times using the `for loop`.
+
+```{webr-r}
+# Set seed for reproducibility
+set.seed(123)
+
+# Repeat the process 10 times
+for (i in 1:10) {
+  # Step 1: Generate 1000 random numbers from standard normal
+  x <- rnorm(1000, mean = 0, sd = 1)
+  
+  # Step 2: Calculate the sample mean
+  m <- mean(x)
+  
+  # Step 3: Print the result
+  print(m)
+}
+```
 
 :::
  
@@ -446,6 +552,51 @@ print(empty_matrix)
 ```{webr-r}
 # Here, is the empty 3 x 3 matrix.  
 empty_matrix <- matrix(NA, nrow = 3, ncol = 3)
+
+```
+
+
+### Answers
+
+You can nest the `for loop` inside another `for loop`. For example, 
+
+```{webr-r}
+# Outer loop
+for (i in 1:3) {
+  # Inner loop
+  for (j in 1:2) {
+    print(paste("i =", i, "j =", j))
+  }
+}
+```
+
+Using the above code as a reference, fill in the following empty 3 x 3 matrix with the sum of the row and column indices.
+
+The output should look like this: 
+
+```{r}
+#| eval: true
+#| echo: false
+empty_matrix <- matrix(NA, nrow = 3, ncol = 3)
+for (i in 1:3){
+  for (j in 1:3){
+    empty_matrix[i, j] <- i + j
+  }
+}
+print(empty_matrix)
+```
+
+<br>
+
+```{webr-r}
+# Here, is the empty 3 x 3 matrix.  
+empty_matrix <- matrix(NA, nrow = 3, ncol = 3)
+for (i in 1:3){
+  for (j in 1:3){
+    empty_matrix[i, j] <- i + j
+  }
+}
+print(empty_matrix)
 
 ```
 
@@ -562,7 +713,12 @@ for(i in 1:B){
   # --- Calculate the mean and the standard deviation --- #
   output_storage[i, mean := mean(random_numbers)]
   output_storage[i, sd := sd(random_numbers)]
-}
+} 
+
+#or output_storage[i, `:=`(
+#  mean = mean(random_numbers),
+#  sd   = sd(random_numbers)
+#)]
 
 output_storage
 ```
@@ -589,6 +745,47 @@ output_storage
 ```
 
 
+### Answers
+
+1. Using the `for loop`, calculate the sum of the first `n` numbers for `n = 1, 2, ..., 10`. For example, the sum of the first 3 numbers (n=3) is 1 + 2 + 3 = 6. Save the results in a vector object.  
+
+2. Fibonacci sequence is a series of numbers in which each number is the sum of the two preceding ones (e.g. 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...). Write a function that generates the first `n` numbers in the Fibonacci sequence. (You use the `for loop` function inside the function.) For example, when `n = 5`, the function should return `c(0, 1, 1, 2, 3)`. For simplicity, let's assume that $n \ge 3$ (You don't need to consider the case where n = 1 or 2).
+
+<br>
+
+```{webr-r}
+#--------Part1--------#
+sums <- rep(0, 10) # or sums <- numeric(10)
+
+# Loop over n = 1 to 10
+for (n in 1:10) {
+  sums[n] <- sum(1:n)
+}
+
+# Print results
+sums
+
+#--------Part2--------#
+fibonacci <- function(n) {
+  # Create a vector to store the sequence
+  fib <- rep(0, n)
+  
+  # First two numbers of Fibonacci sequence
+  fib[1] <- 0
+  fib[2] <- 1
+  
+  # Generate the rest using a for loop
+  for (i in 3:n) {
+    fib[i] <- fib[i - 1] + fib[i - 2]
+  }
+  
+  return(fib)
+}
+
+# Example: first 5 Fibonacci numbers
+fibonacci(5)
+
+```
 
 :::
 
@@ -622,6 +819,69 @@ Let’s take this concept further. Suppose Pythagoras challenges you to find all
  
 *Reference: [Pythagorean Triples](https://en.wikipedia.org/wiki/Pythagorean_triple)*
 
+
+### Answers
+
+```{webr-r}
+#/*--------------------------------*/
+#' ## Approach 1 (loops)
+#/*--------------------------------*/
+find_pythagorean_triples <- function(n){
+  # --- prepare an empty storages --- #
+  triples_storage_dt <- 
+    data.frame(a = integer(), b = integer(), c = integer())
+
+  for(a in 1:n){
+    # for example a = 4
+    for(b in 1:a){
+      # for example b = 3
+      c <- sqrt(a^2 + b^2)
+      if(c == floor(c)){
+        res_triples_dt <- data.frame(a = a, b = b, c = c)
+        triples_storage_dt <- rbind(triples_storage_dt, res_triples_dt)
+      }
+    }
+  }
+  return(triples_storage_dt)
+}
+
+# --- test --- #
+find_pythagorean_triples(n = 5)
+
+
+#/*--------------------------------*/
+#' ## Approach 2 (Vectorized)
+#/*--------------------------------*/
+library(data.table)
+library(dplyr)
+
+find_pythagorean_triples_vec <- function(n){
+  # for example, n = 5
+  # --- create all combinations of (a, b) --- #
+  abc_all_dt <- 
+    CJ(a = 1:n, b = 1:n) %>% 
+    .[, c := sqrt(a^2 + b^2)] %>%
+    # find a row where c is an integer
+    .[c == floor(c), ]
+  
+  return(abc_all_dt)
+}
+
+# NOTE: #CJ() is a function from data.table package that creates all combinations of two vectors. (It is similar to expand.grid() function in base R.)
+
+# --- test --- #
+find_pythagorean_triples_vec(n = 5)
+
+#/*--------------------------------*/
+#' ## Speed Competition
+#/*--------------------------------*/
+system.time(find_pythagorean_triples(n = 10^4))
+system.time(find_pythagorean_triples_vec(n = 10^4))
+
+# Lesson: Vectorized operations are much faster than loops in R!
+
+```
+<!-- end panel:Exercise 3  --> 
 :::
 :::
 
@@ -648,7 +908,7 @@ Up to this point, as long as you understand the following points, you are good t
 
 - Imagine you want to know the chance of winning a dice game. Instead of trying to calculate the exact probability with formulas, you could just roll the dice thousands of times, record the outcomes, and then see how often you win.  
 
-- That’s basically what Monte Carlo Simulation does: it uses repeated random experiments to approximate answers to problems that are hard to solve analytically.”
+- That’s basically what Monte Carlo Simulation does: it uses repeated random experiments to approximate answers to problems that are hard to solve analytically.
 
 - Key ideas:  
   - We model uncertainty with randomness.  
@@ -682,8 +942,6 @@ Suppose that a researcher came up with a new estimator to estimate the coefficie
 + We use Monte Carlo simulation to approximate the probability distribution of the estimator!
 
 :::
-
-
 
 ## Example: Binomial Distribution {.center #monte-demo}
 
@@ -829,6 +1087,50 @@ Finally,
 3. Plot histograms of the sample means obtained from the two samples.
 
 
+### Answers
+
+```{webr-r}
+set.seed(1843)
+
+# --- Parameters --- #
+mu <- 5
+sd <- 10
+
+B <- 1000
+
+# --- Create an empty object to save the output --- #
+sample_mean_100 <- rep(0, B)
+sample_mean_1000 <- rep(0, B)
+
+# --- for loop --- #
+for (i in 1:B){
+  # --- Generate random numbers --- #
+  sample_100 <- rnorm(n = 100, mean = mu, sd = sd)
+  sample_1000 <- rnorm(n = 1000, mean = mu, sd = sd)
+  
+  # --- Compute sample mean --- #
+  sample_mean_100[i] <- mean(sample_100)
+  sample_mean_1000[i] <- mean(sample_1000)
+}
+
+
+# --- Plot --- #
+ggplot() +
+  geom_histogram(
+    aes(x = sample_mean_100, fill = "Sample size: 100"),
+     alpha = 0.7
+  ) +
+  geom_histogram(
+    aes(x = sample_mean_1000, fill = "Sample size: 1000"),
+    alpha = 0.7
+  ) +
+  geom_vline(
+    xintercept = mu,
+    linetype = "dashed",
+  ) +
+  theme_bw()
+```
+
 <!-- end panel:exercise  --> 
 :::
 
@@ -894,6 +1196,50 @@ If you could also visually compare the distribution of estimates from the two es
 
 ```
 
+### Answers
+
+```{webr-r}
+# --- Parameter setting --- #
+B = 1000
+n = 1000
+mu = 170 #(cm)
+
+# --- Prepare a storage object --- #
+res_data <- 
+  data.table(
+    x_bar = rep(0, B),
+    x_single = rep(0, B)
+    )
+
+# --- Monte Carlo simulation --- #
+for(i in 1:B){
+  
+  # --- Create sample data --- #
+  data <- rchisq(n, df=mu)   #rchisq() is a random number generator for the chi-squared distribution.
+  
+  # --- Compute the sample mean --- #
+  x_bar <- mean(data)
+  # --- Get the 1st value --- #
+  x_single <- data[1]
+
+  # --- store the results --- #
+  res_data[i, "x_bar"] <- x_bar
+  res_data[i, "x_single"] <- x_single
+}
+
+# === Visualization === #
+# Just for convenience, transform the data to long-format  (you don't need to do this though)
+vis_sampling <- 
+  ggplot(res_data) +
+    geom_histogram(aes(x=x_bar, fill="x_bar"), alpha = 0.5)+
+    geom_histogram(aes(x=x_single, fill="x_single",), alpha = 0.5)+
+    labs(title="Sample size 1000")+
+    theme_bw() +
+    # modify x-label and legend name
+    labs(x = expression (~hat(beta)), fill = "Estimator")
+
+vis_sampling
+```
 
 <!-- end panel:exercise  --> 
 :::
@@ -1193,6 +1539,123 @@ cyl_means <- rep(0, 3)
 
 :::
 
+### Answers
+
+:::{.panel-tabset} 
+
+### Data Structures and Basic Operations
+
+1. Show the structure of mtcars_dt
+
+2. Calculate the mean mpg (miles per gallon) for all cars
+
+3. Find how many cars have mpg > 20
+
+
+```{webr}
+#--------part 1---------#
+str(mtcars_dt) # or ?mrcars_dt
+
+#--------part 2---------#
+mean(mtcars_dt$mpg)
+
+#--------part 3---------#
+sum(mtcars_dt$mpg > 20)
+
+```
+
+### data.table Operations
+
+1. Create a new column 'power_ratio' = hp/wt (horsepower per weight) and add it to mtcars_dt
+
+2. Filter mtcars_dt to show only cars with automatic transmission (am == 0)
+
+3. Sort mtcars_dt by mpg in descending order and show top 5 cars
+
+4. For each transmission type (am), calculate: count of cars, mean mpg, mean hp
+
+```{webr}
+#--------part 1---------#
+mtcars_dt[, power_ratio := hp/wt]
+
+#--------part 2---------#
+mtcars_dt[am == 0]
+
+#--------part 3---------#
+mtcars_dt[order(-mpg)][1:5]
+
+#--------part 4---------#
+mtcars_dt[, .(count = .N, avg_mpg = mean(mpg, na.rm = TRUE), avg_hp = mean(hp)), by = am]
+
+```
+
+### Data Visualization
+
++ Create a scatter plot of wt vs mpg, with:  
+
+  + Different colors for transmission type (am).   
+
+  + A smooth trend line for each transmission type. 
+
+```{webr}
+ggplot(mtcars_dt, aes(x = wt, y = mpg, color = factor(am))) +
+  geom_point() + 
+  geom_smooth(method = "lm") +
+  labs(title = "Weight vs MPG by Transmission and Cylinders",
+       x = "Weight (1000 lbs)", 
+       y = "Miles per Gallon",
+       color = "Transmission") +
+  theme_bw() +
+  theme(legend.position = "right")
+  
+```
+
+###  Regression Analysis
+
+1. Run a regression: mpg ~ hp + wt + factor(cyl)
+
+2. Extract the coefficient for hp from your model
+
+3. Run a second model: mpg ~ hp + wt + factor(am), and create a comparison table using modelsummary() for both models
+
+```{webr}
+#--------part 1---------#
+model1 <- lm(mpg ~ hp + wt + factor(cyl), data = mtcars_dt)
+
+#--------part 2---------#
+coef(model1)["hp"]
+
+#--------part 3---------#
+model2 <- lm(mpg ~ hp + wt + factor(am), data = mtcars_dt)
+modelsummary(list("Model 1" = model1, "Model 2" = model2))
+
+```
+
+### Programming 
+
+1. Write a function that calculates mpg per cylinder (mpg/cyl)
+
+```{webr}
+calc_mpg_per_cyl <- function(mpg_val, cyl_val) {
+  return(mpg_val / cyl_val)
+}
+
+# Test: calc_mpg_per_cyl(21, 6) should return 3.5
+
+```
+
+2. Use a for loop to calculate the mean mpg for cars with 4, 6, and 8 cylinders. Store results in a vector called 'cyl_means'
+
+```{webr}
+cyl_values <- c(4, 6, 8)
+cyl_means <- rep(0, 3)
+
+for (i in 1:3) {
+  cyl_means[i] <- mean(mtcars_dt[cyl == cyl_values[i], mpg], na.rm = TRUE)
+}
+```
+
+:::
 :::
 
 
